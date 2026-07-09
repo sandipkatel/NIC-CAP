@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   NIC CAP — Brand Color Tokens
+   This is the ONLY place hex values should ever be written.
+   Every component uses the Tailwind utility names (bg-navy, text-red, ...)
+   which are mapped to these variables in tailwind.config.js.
+   ========================================================================== */
+/* Values are "R G B" channel triplets (not hex) so Tailwind's opacity
+   modifiers work, e.g. bg-blue/10, border-red/40. See tailwind.config.js
+   where each of these is wired up as rgb(var(--color-x) / <alpha-value>). */
+:root {
+  /* Core brand */
+  --color-navy: 0 22 65;        /* #001641 — headers, footer, nav chrome */
+  --color-navy-tint: 10 42 94;  /* #0A2A5E — subtle navy panels/gradients */
+  --color-red: 255 26 76;       /* #FF1A4C — primary CTAs, active states */
+  --color-red-hover: 224 18 63; /* #E0123F — red button hover/pressed */
+  --color-blue: 3 88 254;       /* #0358FE — secondary links, focus, badges only */
+
+  /* Surfaces */
+  --color-bg: 248 249 250;   /* #F8F9FA — page canvas, never pure white */
+  --color-card: 255 255 255; /* #FFFFFF — cards, modals, dropdowns only */
+
+  /* Text */
+  --color-text: 33 37 41;       /* #212529 — body text on light surfaces */
+  --color-text-light: 73 80 87; /* #495057 — captions / small text */
+
+  /* Utility */
+  --color-border: 222 226 230; /* #DEE2E6 */
+  --color-success: 30 142 62;  /* #1E8E3E */
+  --color-error: 217 4 41;     /* #D90429 */
+}
+
+body {
+  background-color: rgb(var(--color-bg));
+  color: rgb(var(--color-text));
+}
+
+/* ==========================================================================
+   Shared component classes (kept minimal, composed from Tailwind utilities
+   that reference the tokens above)
+   ========================================================================== */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center bg-red text-white font-semibold
+    rounded-btn px-6 py-3 shadow-sm transition-all duration-200
+    hover:bg-red-hover hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center bg-transparent border-[1.5px]
+    border-navy text-navy font-semibold rounded-btn px-6 py-3 transition-all duration-200
+    hover:bg-navy hover:text-white;
+  }
+
+  .btn-outline-light {
+    @apply inline-flex items-center justify-center bg-transparent border-[1.5px]
+    border-white text-white font-semibold rounded-btn px-6 py-3 transition-all duration-200
+    hover:bg-white hover:text-navy;
+  }
+
+  .card {
+    @apply bg-card border border-border rounded-card p-6 shadow-[0_2px_12px_rgba(0,22,65,0.08)];
+  }
+
+  .input-field {
+    @apply w-full bg-card border border-border rounded-btn px-4 py-2.5 text-text
+    placeholder:text-text-light focus:outline-none focus:border-blue focus:ring-1 focus:ring-blue
+    transition-colors duration-150;
+  }
+
+  .label-field {
+    @apply block text-sm font-semibold text-navy mb-1.5;
+  }
+
+  .eyebrow {
+    @apply text-sm font-semibold text-red uppercase tracking-wider;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-extrabold text-navy tracking-tight;
+  }
+
+  .container-page {
+    @apply max-w-content mx-auto px-5 md:px-8;
+  }
+
+  .placeholder-note {
+    @apply card border-dashed border-2 border-blue/40 bg-blue/5 text-sm text-text-light;
+  }
+}
