@@ -1,4 +1,3 @@
-import PlaceholderNote from "../../components/PlaceholderNote";
 import { adminSummary } from "../../data/mockData";
 
 export default function AdminPage() {
@@ -7,14 +6,7 @@ export default function AdminPage() {
       <p className="eyebrow mb-3">Administration</p>
       <h1 className="section-title mb-6">Admin Panel</h1>
 
-      <PlaceholderNote title="Role-based access control (NFR-2.1, NFR-2.2)">
-        This panel is restricted to the &quot;Administrator&quot; role and would sit behind
-        Google OAuth + backend permission checks. The cards below simulate the analytics
-        summary an admin would see (FR-7.4), fed by mock data instead of the Django REST
-        API described in the SRS.
-      </PlaceholderNote>
-
-      {/* FR-7.4 — Analytics dashboard */}
+      {/* FR-7.4 - Analytics dashboard */}
       <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 my-8">
         <div className="card text-center">
           <p className="text-2xl font-extrabold text-navy">{adminSummary.totalAmbassadors}</p>

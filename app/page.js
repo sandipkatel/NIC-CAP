@@ -1,12 +1,17 @@
 import Link from "next/link";
+import HeroImageStack from "../components/home/HeroImageStack";
 import { stats, processSteps, benefits } from "../data/mockData";
 
 export default function HomePage() {
   return (
     <>
-      {/* FR-1.1 — Hero */}
-      <section className="bg-navy text-white">
-        <div className="container-page py-20 md:py-28 grid md:grid-cols-2 gap-10 items-center">
+     {/* FR-1.1 - Hero */}
+      <section className="relative bg-navy text-white overflow-hidden">
+        {/* Decorative glow accents for depth */}
+        <div className="pointer-events-none absolute -top-24 -right-24 w-96 h-96 bg-red/20 rounded-full blur-3xl" />
+        <div className="pointer-events-none absolute bottom-0 -left-24 w-72 h-72 bg-blue/20 rounded-full blur-3xl" />
+
+        <div className="container-page relative pt-10 md:pt-12 pb-28 md:pb-36 grid md:grid-cols-2 gap-12 items-center">
           <div>
             <p className="eyebrow mb-4">National Innovation Centre · Nepal</p>
             <h1 className="text-4xl md:text-5xl font-extrabold leading-[1.1] mb-5">
@@ -14,70 +19,56 @@ export default function HomePage() {
             </h1>
             <p className="text-white/75 text-lg mb-8 max-w-md">
               The College Ambassador Program trains students to lead innovation activities
-              at their own institution — with NIC&apos;s network, resources, and mentorship behind them.
+              at their own institution - with NIC&apos;s network, resources, and mentorship behind them.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link href="/apply" className="btn-primary">Become Ambassador</Link>
               <Link href="/network" className="btn-outline-light">Explore Network</Link>
             </div>
           </div>
-          <div className="hidden md:flex justify-center">
-            <div className="w-full max-w-sm aspect-square rounded-card bg-navy-tint border border-white/10 flex items-center justify-center">
-              <p className="text-white/40 text-sm text-center px-8">
-                Campus illustration / photo placeholder
-                <br />(supplied by NIC per SRS §2.4)
-              </p>
-            </div>
-          </div>
+          <HeroImageStack />
         </div>
       </section>
 
-      {/* FR-1.5 — Summary statistics */}
-      <section className="bg-navy">
-        <div className="container-page pb-14 grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* FR-1.5 - Summary statistics, elevated to bridge hero and the section below */}
+      <section className="container-page relative z-10 -mt-16 md:-mt-20 mb-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {stats.map((s) => (
-            <div key={s.label} className="card !bg-navy-tint !border-white/10 text-center py-6">
-              <p className="text-3xl font-extrabold text-white">{s.value}</p>
-              <p className="text-white/60 text-sm mt-1">{s.label}</p>
+            <div key={s.label} className="card text-center py-7 shadow-lg">
+              <p className="text-3xl font-extrabold text-navy">{s.value}</p>
+              <p className="text-text-light text-sm mt-1">{s.label}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* FR-1.2 — About CAP */}
-      <section id="about" className="container-page py-20">
+      {/* About CAP */}
+      <section id="about" className="container-page pb-20">
         <div className="grid md:grid-cols-2 gap-12 items-start">
           <div>
             <p className="eyebrow mb-3">About CAP</p>
             <h2 className="section-title mb-5">Not a club. A launchpad.</h2>
             <p className="text-text-light leading-relaxed mb-4">
-              The College Ambassador Program (CAP) is NIC&apos;s student-led extension into
-              universities across Nepal. Our mission is simple: put innovation tools,
-              mentorship, and national visibility directly in the hands of students who
-              want to build something on their own campus.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </p>
+            <p className="text-text-light leading-relaxed mb-4">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
             </p>
             <p className="text-text-light leading-relaxed">
-              Since launch, ambassadors have organized hackathons, design workshops, and
-              idea-pitch nights that connect classmates to NIC&apos;s incubation and funding
-              programs — turning campus projects into recognized ventures.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
             </p>
           </div>
           <div className="card">
             <h3 className="font-semibold text-navy mb-2">Our Vision</h3>
             <p className="text-text-light text-sm mb-5">
               A Nepal where every college has a direct line to national innovation
-              infrastructure — no student's idea stalls for lack of access.
-            </p>
-            <h3 className="font-semibold text-navy mb-2">Our Impact</h3>
-            <p className="text-text-light text-sm">
-              186 active ambassadors across 37 partner institutions have reached over
-              12,000 students with hands-on innovation programming.
+              infrastructure - no student's idea stalls for lack of access.
             </p>
           </div>
         </div>
       </section>
 
-      {/* FR-1.3 — Benefits */}
+      {/* FR-1.3 - Benefits */}
       <section className="bg-card border-y border-border">
         <div className="container-page py-20">
           <p className="eyebrow mb-3 text-center">Why Join</p>
@@ -93,7 +84,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FR-1.4 — Application process as a sequence */}
+      {/* FR-1.4 - Application process as a sequence */}
       <section className="container-page py-20">
         <p className="eyebrow mb-3 text-center">The Path</p>
         <h2 className="section-title text-center mb-14">From application to leadership</h2>

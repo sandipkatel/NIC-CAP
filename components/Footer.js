@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -6,11 +7,11 @@ export default function Footer() {
       <div className="container-page py-12 grid grid-cols-1 sm:grid-cols-3 gap-8">
         <div>
           <div className="flex items-center gap-2 font-extrabold text-lg mb-3">
-            <span className="bg-red rounded-md w-8 h-8 flex items-center justify-center text-sm">NIC</span>
+            <Image src="/logo.png" alt="NIC CAP" width={32} height={32} className="rounded-lg bg-slate-50 rounded-full w-8 h-8" />
             <span>CAP</span>
           </div>
           <p className="text-sm text-white/70">
-            National Innovation Centre, Nepal — building the country&apos;s next generation
+            National Innovation Centre, Nepal - building the country&apos;s next generation
             of student innovators, one campus at a time.
           </p>
         </div>

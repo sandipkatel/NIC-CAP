@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import Image from "next/image";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -12,7 +13,7 @@ const navLinks = [
   { href: "/stories", label: "Stories" },
 ];
 
-// Dashboard/Admin are separate "portals" — kept apart from the public
+// Dashboard/Admin are separate "portals" - kept apart from the public
 // navigation links since they represent logged-in areas of the site.
 const portalLinks = [
   { href: "/dashboard", label: "Ambassador Login" },
@@ -29,7 +30,7 @@ export default function Navbar() {
     <header className="bg-navy sticky top-0 z-50">
       <nav className="container-page flex items-center justify-between h-16">
         <Link href="/" className="flex items-center gap-2 text-white font-extrabold text-lg tracking-tight">
-          <span className="bg-red rounded-md w-8 h-8 flex items-center justify-center text-sm">NIC</span>
+          <Image src="/logo.png" alt="NIC CAP" width={32} height={32} className="rounded-lg bg-slate-50 rounded-full w-8 h-8" />
           <span className="hidden sm:inline">College Ambassador Program</span>
           <span className="sm:hidden">CAP</span>
         </Link>
@@ -44,18 +45,6 @@ export default function Navbar() {
                 isActive(link.href)
                   ? "text-white border-red"
                   : "text-[#F8F9FA]/80 border-transparent hover:text-white hover:border-red/60"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <div className="w-px h-5 bg-white/20" />
-          {portalLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`text-sm font-medium transition-colors duration-150 ${
-                isActive(link.href) ? "text-red" : "text-[#F8F9FA]/80 hover:text-white"
               }`}
             >
               {link.label}
@@ -84,7 +73,7 @@ export default function Navbar() {
       {/* Mobile menu */}
       {open && (
         <div className="md:hidden bg-navy border-t border-white/10 px-5 pb-4">
-          {[...navLinks, ...portalLinks].map((link) => (
+          {[...navLinks].map((link) => (
             <Link
               key={link.href}
               href={link.href}

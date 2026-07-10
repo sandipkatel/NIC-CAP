@@ -6,11 +6,23 @@
 // data-fetch without needing a backend during frontend development.
 // ---------------------------------------------------------------------------
 
+// Hero image stack - swap these `src` paths for real photos once supplied.
+// Drop the actual files into /public/images/hero/ using these exact filenames
+// (see public/images/hero/README.md), and this data is the only place you
+// need to update if filenames change.
+export const heroImages = [
+  { id: 1, src: "/carousel/1.png", alt: "Ambassadors leading a campus workshop", tint: "bg-navy-tint" },
+  { id: 2, src: "/carousel/2.png", alt: "Students collaborating at a campus hackathon", tint: "bg-navy" },
+  { id: 3, src: "/carousel/3.png", alt: "Innovation bootcamp session", tint: "bg-navy-tint" },
+  { id: 4, src: "/carousel/4.png", alt: "Ambassador network meetup", tint: "bg-navy" },
+  { id: 5, src: "/carousel/5.png", alt: "Award ceremony for top ambassadors", tint: "bg-navy-tint" },
+];
+
 export const stats = [
-  { label: "Students Reached", value: "12,400+" },
-  { label: "Active Ambassadors", value: "186" },
-  { label: "Events Held", value: "94" },
-  { label: "Partner Institutions", value: "37" },
+  { label: "Students Reached", value: "3,333+" },
+  { label: "Active Ambassadors", value: "18" },
+  { label: "Events Held", value: "33" },
+  { label: "Partner Institutions", value: "18" },
 ];
 
 export const processSteps = [
@@ -37,33 +49,41 @@ export const processSteps = [
   {
     step: 5,
     title: "Innovation Leadership",
-    description: "Top performers move into regional leadership and mentor new ambassadors.",
+    description: "Top performers move i1nto regional leadership and mentor new ambassadors.",
   },
 ];
 
 export const benefits = [
   {
     title: "Leadership Opportunities",
-    description: "Lead campus chapters, organize events, and represent NIC to your institution.",
+    description: `Lead campus chapters, organize events, and represent NIC to your institution.
+lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
   },
   {
     title: "Networking",
-    description: "Connect with ambassadors, founders, and mentors across Nepal's innovation ecosystem.",
+    description: `Connect with ambassadors, founders, and mentors across Nepal's innovation ecosystem.
+lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
   },
   {
     title: "Skill Development",
-    description: "Build public speaking, project management, and community-building skills.",
+    description: `Build public speaking, project management, and community-building skills.
+lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
   },
   {
     title: "Recognition",
-    description: "Earn certificates, badges, and priority access to NIC programs and internships.",
+    description: `Earn certificates, badges, and priority access to NIC programs and internships.
+lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
   },
 ];
 
 export const upcomingEvents = [
   {
     id: "evt-101",
-    name: "Innovation Bootcamp — Kathmandu Chapter",
+    name: "Innovation Bootcamp - Kathmandu Chapter",
     date: "2026-08-14",
     location: "Kathmandu University, Dhulikhel",
     registrationOpen: true,
@@ -77,7 +97,7 @@ export const upcomingEvents = [
   },
   {
     id: "evt-103",
-    name: "Ambassador Onboarding — Fall Cohort",
+    name: "Ambassador Onboarding - Fall Cohort",
     date: "2026-09-05",
     location: "NIC HQ, Jawalakhel",
     registrationOpen: false,
@@ -167,7 +187,7 @@ export const innovationStories = [
 // Mock signed-in ambassador, used to render the (placeholder) dashboard.
 export const currentAmbassador = {
   name: "Sujata Koirala",
-  level: "Level 2 — Campus Lead",
+  level: "Level 2 - Campus Lead",
   college: "Kathmandu University",
   tasksCompleted: 18,
   approvedEvents: 4,

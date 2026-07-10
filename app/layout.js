@@ -5,14 +5,14 @@ import Footer from "../components/Footer";
 export const metadata = {
   title: "NIC College Ambassador Program",
   description:
-    "National Innovation Centre, Nepal — College Ambassador Program. Apply, connect, and lead innovation on your campus.",
+    "National Innovation Centre, Nepal - College Ambassador Program. Apply, connect, and lead innovation on your campus.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        {/* Simple <link> tag instead of next/font — avoids a build-time
+        {/* Simple <link> tag instead of next/font - avoids a build-time
             network fetch and keeps the font loading setup easy to follow. */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />

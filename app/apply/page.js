@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import PlaceholderNote from "../../components/PlaceholderNote";
 import { collegeOptions, academicYearOptions, skillOptions } from "../../data/mockData";
 
 const initialForm = {
@@ -38,7 +37,7 @@ export default function ApplyPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // FR-2.3 — In production this would POST to the backend, which routes
+    // FR-2.3 - In production this would POST to the backend, which routes
     // the application to NIC administrators for review. Here we just
     // simulate that with local state.
     setSubmitted(true);
@@ -105,7 +104,7 @@ export default function ApplyPage() {
           <label className="label-field">Address <span className="text-red">*</span></label>
           <input required name="address" value={form.address} onChange={handleChange} className="input-field" placeholder="Start typing your address" />
           <p className="text-xs text-text-light mt-1.5">
-            Autocomplete note below — this field uses a plain text input for now.
+            Autocomplete note below - this field uses a plain text input for now.
           </p>
         </div>
 
@@ -113,13 +112,6 @@ export default function ApplyPage() {
           <label className="label-field">College Location <span className="text-red">*</span></label>
           <input required name="collegeLocation" value={form.collegeLocation} onChange={handleChange} className="input-field" placeholder="Start typing college location" />
         </div>
-
-        <PlaceholderNote title="OpenStreetMap (OSM) address autocomplete">
-          Per SRS FR-2.1, the Address and College Location fields are meant to use OSM-based
-          location suggestions as the user types. That requires a map/geocoding integration
-          (e.g. Nominatim) which is out of scope for this frontend boilerplate — the fields
-          above are plain text inputs standing in for that behavior.
-        </PlaceholderNote>
 
         <div>
           <label className="label-field">Skills</label>
@@ -156,12 +148,6 @@ export default function ApplyPage() {
           <input type="file" className="input-field file:mr-4 file:py-1.5 file:px-3 file:rounded-btn file:border-0 file:bg-navy file:text-white file:text-sm" />
           <p className="text-xs text-text-light mt-1.5">Optional. PDF preferred, max 5MB.</p>
         </div>
-
-        <PlaceholderNote title="File upload & storage">
-          Uploaded recommendation letters would be sent to backend storage (e.g. S3 or a
-          Django media bucket) and linked to the application record. This form does not
-          persist the file — it is a UI placeholder only.
-        </PlaceholderNote>
 
         <button type="submit" className="btn-primary w-full sm:w-auto">Submit Application</button>
       </form>

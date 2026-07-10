@@ -2,30 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ==========================================================================
-   NIC CAP — Brand Color Tokens
-   This is the ONLY place hex values should ever be written.
-   Every component uses the Tailwind utility names (bg-navy, text-red, ...)
-   which are mapped to these variables in tailwind.config.js.
-   ========================================================================== */
-/* Values are "R G B" channel triplets (not hex) so Tailwind's opacity
-   modifiers work, e.g. bg-blue/10, border-red/40. See tailwind.config.js
-   where each of these is wired up as rgb(var(--color-x) / <alpha-value>). */
 :root {
   /* Core brand */
-  --color-navy: 0 22 65;        /* #001641 — headers, footer, nav chrome */
-  --color-navy-tint: 10 42 94;  /* #0A2A5E — subtle navy panels/gradients */
-  --color-red: 255 26 76;       /* #FF1A4C — primary CTAs, active states */
-  --color-red-hover: 224 18 63; /* #E0123F — red button hover/pressed */
-  --color-blue: 3 88 254;       /* #0358FE — secondary links, focus, badges only */
+  --color-navy: 0 22 65;        /* #001641 - headers, footer, nav chrome */
+  --color-navy-tint: 10 42 94;  /* #0A2A5E - subtle navy panels/gradients */
+  --color-red: 255 26 76;       /* #FF1A4C - primary CTAs, active states */
+  --color-red-hover: 224 18 63; /* #E0123F - red button hover/pressed */
+  --color-blue: 3 88 254;       /* #0358FE - secondary links, focus, badges only */
 
   /* Surfaces */
-  --color-bg: 248 249 250;   /* #F8F9FA — page canvas, never pure white */
-  --color-card: 255 255 255; /* #FFFFFF — cards, modals, dropdowns only */
+  --color-bg: 248 249 250;   /* #F8F9FA - page canvas, never pure white */
+  --color-card: 255 255 255; /* #FFFFFF - cards, modals, dropdowns only */
 
   /* Text */
-  --color-text: 33 37 41;       /* #212529 — body text on light surfaces */
-  --color-text-light: 73 80 87; /* #495057 — captions / small text */
+  --color-text: 33 37 41;       /* #212529 - body text on light surfaces */
+  --color-text-light: 73 80 87; /* #495057 - captions / small text */
 
   /* Utility */
   --color-border: 222 226 230; /* #DEE2E6 */
@@ -34,6 +25,7 @@
 }
 
 body {
+  padding: 0;
   background-color: rgb(var(--color-bg));
   color: rgb(var(--color-text));
 }
@@ -84,10 +76,6 @@ body {
   }
 
   .container-page {
-    @apply max-w-content mx-auto px-5 md:px-8;
-  }
-
-  .placeholder-note {
-    @apply card border-dashed border-2 border-blue/40 bg-blue/5 text-sm text-text-light;
+    @apply mx-auto px-5 md:px-8;
   }
 }

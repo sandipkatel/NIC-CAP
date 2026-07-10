@@ -17,7 +17,7 @@ export default function EventsPage() {
         Ambassador-led workshops, hackathons, and info sessions happening across our partner campuses.
       </p>
 
-      {/* FR-5.1 — Upcoming events */}
+      {/* FR-5.1 - Upcoming events */}
       <section className="mb-16">
         <h2 className="text-xl font-bold text-navy mb-5">Upcoming</h2>
         <div className="grid md:grid-cols-3 gap-6">
@@ -37,7 +37,7 @@ export default function EventsPage() {
         </div>
       </section>
 
-      {/* FR-5.2 — Past events archive */}
+      {/* FR-5.2 - Past events archive */}
       <section>
         <h2 className="text-xl font-bold text-navy mb-5">Past Events Archive</h2>
         <div className="space-y-4">
