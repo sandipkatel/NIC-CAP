@@ -63,7 +63,7 @@ export default function ApplyPage() {
       <h1 className="section-title mb-3">Apply to become an ambassador</h1>
       <p className="text-text-light mb-8">
         Fields marked <span className="text-red">*</span> are required. Your application is
-        reviewed by NIC staff before a decision is made (FR-2.3, FR-2.4).
+        reviewed by NIC staff before a decision is made.
       </p>
 
       <form onSubmit={handleSubmit} className="card space-y-6">

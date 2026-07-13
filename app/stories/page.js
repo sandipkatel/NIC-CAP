@@ -7,7 +7,7 @@ export default function StoriesPage() {
       <h1 className="section-title mb-3">Ideas built by ambassadors</h1>
       <p className="text-text-light mb-10 max-w-2xl">
         Projects and initiatives published by NIC administrators to showcase student-led
-        innovation happening across partner campuses (FR-6.1).
+        innovation happening across partner campuses.
       </p>
 
       <div className="grid md:grid-cols-3 gap-6">
