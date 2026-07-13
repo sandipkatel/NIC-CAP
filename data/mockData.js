@@ -122,41 +122,278 @@ export const pastEvents = [
 ];
 
 export const ambassadors = [
+  // ───────────────── Cohort 2026 (current) ─────────────────
   {
-    id: "amb-01",
-    name: "Sujata Koirala",
-    college: "Kathmandu University",
-    location: "Dhulikhel",
-    linkedin: "https://linkedin.com/in/sujata-koirala",
-    skills: ["Public Speaking", "UI/UX", "Event Planning"],
-    achievements: "Organized 4 campus workshops, 300+ attendees",
+    id: 1,
+    name: "Sandip Katel",
+    photo: "./carousel/1.png",
+    college: "IOE, Pulchowk Campus",
+    location: "Kathmandu, Nepal",
+    skills: ["Community Building", "Public Speaking"],
+    linkedin: "https://linkedin.com/in/sandipkatel",
+    cohort: "2026",
+    cohortOrder: 2026,
+    program: [
+      {
+        name: "Startup Sprint Bootcamp",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Organized a three-day ideation bootcamp bringing together students from six colleges to prototype early-stage startup ideas.",
+        image: "./carousel/5.png",
+      },
+      {
+        name: "Workshop on Apache Kafka",
+        description:
+          "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, introducing event-driven architecture concepts to over forty engineering students.",
+        image: "./carousel/4.png",
+      },
+    ],
+    contribution:
+      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Coordinated sponsor outreach and onboarded a new batch of volunteer ambassadors for the region.",
+    gained:
+      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat, gaining hands-on experience in event operations and stakeholder communication.",
+    testimonial:
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
   },
   {
-    id: "amb-02",
-    name: "Bikash Shrestha",
-    college: "Pulchowk Campus, IOE",
-    location: "Lalitpur",
-    linkedin: "https://linkedin.com/in/bikash-shrestha",
-    skills: ["Robotics", "Team Leadership"],
-    achievements: "Led winning team at National Hackathon 2026",
+    id: 2,
+    name: "Purnima Wagle",
+    photo: "./carousel/2.png",
+    college: "Prithvi Narayan Campus",
+    location: "Pokhara, Nepal",
+    skills: ["Design", "Content Writing"],
+    linkedin: "https://linkedin.com/in/priya-koirala",
+    cohort: "2026",
+    cohortOrder: 2026,
+    program: [
+      {
+        name: "Design Thinking Workshop Series",
+        description:
+          "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum, running a design-thinking workshop series for first-year students.",
+        image: "",
+      },
+    ],
+    contribution:
+      "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti, producing all campaign visuals and newsletters for the campus chapter.",
+    gained:
+      "Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat, sharpening both design and project-management skills.",
+    testimonial:
+      "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet.",
   },
   {
-    id: "amb-03",
-    name: "Anisha Gurung",
+    id: 3,
+    name: "Ayusha Hamal",
+    photo: "./carousel/3.png",
+    college: "Tribhuvan University",
+    location: "Pokhara, Nepal",
+    skills: ["Outreach", "Data Analysis"],
+    linkedin: "https://linkedin.com/in/bibek-thapa",
+    cohort: "2026",
+    cohortOrder: 2026,
+    program: [
+      {
+        name: "Alumni Mentorship Match",
+        description:
+          "Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur, launching a mentorship-matching program between alumni and current students.",
+        image: "./carousel/4.png",
+      },
+      {
+        name: "Data for Good Meetup",
+        description:
+          "Aut perferendis doloribus asperiores repellat, hosting a monthly meetup teaching practical data-analysis tools to non-technical student volunteers.",
+        image: "",
+      },
+    ],
+    contribution:
+      "Ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat, building a simple dashboard to track ambassador engagement across colleges.",
+    gained:
+      "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet consectetur adipisci velit, developing practical data-analysis and reporting skills.",
+    testimonial:
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
+  },
+  {
+    id: 3,
+    name: "Prakriti",
+    photo: "./carousel/4.png",
+    college: "Tribhuvan University",
+    location: "Pokhara, Nepal",
+    skills: ["Outreach", "Data Analysis"],
+    linkedin: "https://linkedin.com/in/bibek-thapa",
+    cohort: "2026",
+    cohortOrder: 2026,
+    program: [
+      {
+        name: "Alumni Mentorship Match",
+        description:
+          "Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur, launching a mentorship-matching program between alumni and current students.",
+        image: "./carousel/4.png",
+      },
+      {
+        name: "Data for Good Meetup",
+        description:
+          "Aut perferendis doloribus asperiores repellat, hosting a monthly meetup teaching practical data-analysis tools to non-technical student volunteers.",
+        image: "",
+      },
+    ],
+    contribution:
+      "Ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat, building a simple dashboard to track ambassador engagement across colleges.",
+    gained:
+      "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet consectetur adipisci velit, developing practical data-analysis and reporting skills.",
+    testimonial:
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
+  },
+
+  // ───────────────── Cohort 2025 ─────────────────
+  {
+    id: 4,
+    name: "Prakriti Gurung",
+    photo: "",
     college: "Pokhara University",
-    location: "Pokhara",
-    linkedin: "https://linkedin.com/in/anisha-gurung",
-    skills: ["Content Writing", "Social Media"],
-    achievements: "Grew campus chapter Instagram to 5,000 followers",
+    location: "Pokhara, Nepal",
+    skills: ["Event Management", "Public Speaking"],
+    linkedin: "https://linkedin.com/in/sristi-gurung",
+    cohort: "2025",
+    cohortOrder: 2025,
+    program: [
+      {
+        name: "Regional Innovation Fair",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod, organizing a regional innovation fair featuring twelve student-led projects.",
+        image: "",
+      },
+    ],
+    contribution:
+      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris, recruiting and training a team of ten campus volunteers over two semesters.",
+    gained:
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur, gaining confidence in public speaking and team leadership.",
+    testimonial:
+      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
   },
   {
-    id: "amb-04",
-    name: "Prakash Tamang",
+    id: 5,
+    name: "Nischal Adhikari",
+    photo: "",
     college: "Purbanchal University",
-    location: "Biratnagar",
-    linkedin: "https://linkedin.com/in/prakash-tamang",
-    skills: ["Data Analysis", "Mentoring"],
-    achievements: "Mentored 15 first-year students into NIC programs",
+    location: "Biratnagar, Nepal",
+    skills: ["Marketing", "Photography"],
+    linkedin: "https://linkedin.com/in/nischal-adhikari",
+    cohort: "2025",
+    cohortOrder: 2025,
+    program: [
+      {
+        name: "Ambassador Summit Campaign",
+        description:
+          "At vero eos et accusamus et iusto odio dignissimos ducimus, running a social-media takeover campaign to promote the annual ambassador summit.",
+        image: "",
+      },
+    ],
+    contribution:
+      "Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit, shooting and editing event photography used across all NIC channels.",
+    gained:
+      "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, learning brand storytelling and content strategy.",
+    testimonial:
+      "Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias.",
+  },
+  {
+    id: 6,
+    name: "Alisha Rai",
+    photo: "",
+    college: "Kathmandu University",
+    location: "Dhulikhel, Nepal",
+    skills: ["Research", "Community Building"],
+    linkedin: "https://linkedin.com/in/alisha-rai",
+    cohort: "2025",
+    cohortOrder: 2025,
+    program: [
+      {
+        name: "Peer Research Circle",
+        description:
+          "Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore, coordinating a peer-research circle on early-stage entrepreneurship in Nepal.",
+        image: "",
+      },
+    ],
+    contribution:
+      "Ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus, compiling a resource directory now used by new ambassadors nationwide.",
+    gained:
+      "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet consectetur adipisci velit, building research and synthesis skills.",
+    testimonial:
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
+  },
+
+  // ───────────────── Cohort 2024 ─────────────────
+  {
+    id: 7,
+    name: "Suman Basnet",
+    photo: "",
+    college: "Tribhuvan University",
+    location: "Kathmandu, Nepal",
+    skills: ["Leadership", "Fundraising"],
+    linkedin: "https://linkedin.com/in/suman-basnet",
+    cohort: "2024",
+    cohortOrder: 2024,
+    program: [
+      {
+        name: "Inter-College Pitch Competition",
+        description:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, launching the first inter-college pitch competition later adopted as an annual NIC tradition.",
+        image: "",
+      },
+    ],
+    contribution:
+      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, securing early sponsors that funded the following two years of programming.",
+    gained:
+      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip, developing fundraising and negotiation skills.",
+    testimonial:
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+  },
+  {
+    id: 8,
+    name: "Manisha KC",
+    photo: "",
+    college: "Pokhara University",
+    location: "Pokhara, Nepal",
+    skills: ["Content Writing", "Outreach"],
+    linkedin: "https://linkedin.com/in/manisha-kc",
+    cohort: "2024",
+    cohortOrder: 2024,
+    program: [
+      {
+        name: "Founders Monthly Newsletter",
+        description:
+          "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia, starting a monthly newsletter highlighting student founders in the region.",
+        image: "",
+      },
+    ],
+    contribution:
+      "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium, growing the ambassador mailing list from zero to over a thousand subscribers.",
+    gained:
+      "Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus, sharpening long-form writing and editorial planning skills.",
+    testimonial:
+      "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet.",
+  },
+  {
+    id: 9,
+    name: "Rohit Maharjan",
+    photo: "",
+    college: "IOE Pulchowk Campus",
+    location: "Kathmandu, Nepal",
+    skills: ["Operations", "Public Speaking"],
+    linkedin: "https://linkedin.com/in/rohit-maharjan",
+    cohort: "2024",
+    cohortOrder: 2024,
+    program: [
+      {
+        name: "National Ambassador Meetup",
+        description:
+          "Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus, running logistics for NIC's first in-person national ambassador meetup.",
+        image: "",
+      },
+    ],
+    contribution:
+      "Ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores, building the run-of-show template still used for national events today.",
+    gained:
+      "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet consectetur adipisci velit, gaining end-to-end event operations experience.",
+    testimonial:
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
   },
 ];
 
