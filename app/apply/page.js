@@ -1,46 +1,123 @@
 "use client";
 
-import { useState } from "react";
-import { collegeOptions, academicYearOptions, skillOptions } from "../../data/mockData";
+import { useState, useEffect } from "react";
+import { submitApplicationAction } from "@/actions/applicationActions";
+import { getProvincesAction, getDistrictsAction, getCitiesAction } from "@/actions/locationActions";
 
 const initialForm = {
-  fullName: "",
+  firstName: "",
+  lastName: "",
   email: "",
-  phone: "",
+  phoneNumber: "",
   address: "",
-  college: "",
-  collegeLocation: "",
+  province: "",
+  district: "",
+  city: "",
+  collegeName: "",
   faculty: "",
-  academicYear: "",
-  skills: [],
-  motivation: "",
-  socialLinks: "",
+  currentYearOrSemester: "",
+  linkedinUrl: "",
+  githubUrl: "",
+  portfolioUrl: "",
+};
+
+const initialFiles = {
+  cv: null,
+  coverLetter: null,
+  collegeRecommendationLetter: null,
 };
 
 export default function ApplyPage() {
   const [form, setForm] = useState(initialForm);
-  const [submitted, setSubmitted] = useState(false);
+  const [files, setFiles] = useState(initialFiles);
+
+  const [provinces, setProvinces] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [formError, setFormError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(null);
+
+  // Load provinces once on mount.
+  useEffect(() => {
+    getProvincesAction().then((res) => {
+      if (res.ok) setProvinces(res.data);
+    });
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const toggleSkill = (skill) => {
-    setForm((prev) => ({
-      ...prev,
-      skills: prev.skills.includes(skill)
-        ? prev.skills.filter((s) => s !== skill)
-        : [...prev.skills, skill],
-    }));
+  const handleFileChange = (e) => {
+    const { name, files: fileList } = e.target;
+    setFiles((prev) => ({ ...prev, [name]: fileList?.[0] ?? null }));
   };
 
-  const handleSubmit = (e) => {
+  const handleProvinceChange = async (e) => {
+    const provinceId = e.target.value;
+    setForm((prev) => ({ ...prev, province: provinceId, district: "", city: "" }));
+    setDistricts([]);
+    setCities([]);
+    if (!provinceId) return;
+
+    const res = await getDistrictsAction(provinceId);
+    if (res.ok) setDistricts(res.data);
+  };
+
+  const handleDistrictChange = async (e) => {
+    const districtId = e.target.value;
+    setForm((prev) => ({ ...prev, district: districtId, city: "" }));
+    setCities([]);
+    if (!districtId) return;
+
+    const res = await getCitiesAction(districtId);
+    if (res.ok) setCities(res.data);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // FR-2.3 - In production this would POST to the backend, which routes
-    // the application to NIC administrators for review. Here we just
-    // simulate that with local state.
-    setSubmitted(true);
+    setFormError("");
+    setFieldErrors({});
+
+    if (!files.cv || !files.coverLetter || !files.collegeRecommendationLetter) {
+      setFormError("CV, cover letter, and college recommendation letter are all required.");
+      return;
+    }
+
+    const payload = new FormData();
+    payload.append("first_name", form.firstName);
+    payload.append("last_name", form.lastName);
+    payload.append("email", form.email);
+    payload.append("phone_number", form.phoneNumber);
+    payload.append("province", form.province);
+    payload.append("district", form.district);
+    payload.append("city", form.city);
+    payload.append("address", form.address);
+    payload.append("college_name", form.collegeName);
+    payload.append("faculty", form.faculty);
+    payload.append("current_year_or_semester", form.currentYearOrSemester);
+    if (form.linkedinUrl) payload.append("linkedin_url", form.linkedinUrl);
+    if (form.githubUrl) payload.append("github_url", form.githubUrl);
+    if (form.portfolioUrl) payload.append("portfolio_url", form.portfolioUrl);
+    payload.append("cv", files.cv);
+    payload.append("cover_letter", files.coverLetter);
+    payload.append("college_recommendation_letter", files.collegeRecommendationLetter);
+
+    setIsSubmitting(true);
+    const res = await submitApplicationAction(payload);
+    setIsSubmitting(false);
+
+    if (!res.ok) {
+      setFormError(res.message || "Something went wrong. Please try again.");
+      setFieldErrors(res.fieldErrors || {});
+      return;
+    }
+
+    setSubmitted(res.data);
   };
 
   if (submitted) {
@@ -49,8 +126,12 @@ export default function ApplyPage() {
         <div className="card">
           <h1 className="section-title mb-3">Application received</h1>
           <p className="text-text-light">
-            Thanks, {form.fullName.split(" ")[0] || "there"}. NIC administrators will review your
-            application and follow up by email at <span className="font-semibold text-navy">{form.email || "your address"}</span>.
+            Thanks, {form.firstName || "there"}. NIC administrators will review your application
+            and follow up by email at{" "}
+            <span className="font-semibold text-navy">{form.email || "your address"}</span>.
+          </p>
+          <p className="text-xs text-text-light mt-4">
+            Reference ID: <span className="font-mono">{submitted.id}</span> · Status: {submitted.status}
           </p>
         </div>
       </div>
@@ -66,90 +147,130 @@ export default function ApplyPage() {
         reviewed by NIC staff before a decision is made.
       </p>
 
+      {formError && (
+        <div className="mb-6 rounded-btn border border-red/30 bg-red/5 px-4 py-3 text-sm text-red">
+          {formError}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="card space-y-6">
         <div className="grid sm:grid-cols-2 gap-6">
           <div>
-            <label className="label-field">Full Name <span className="text-red">*</span></label>
-            <input required name="fullName" value={form.fullName} onChange={handleChange} className="input-field" placeholder="e.g. Sujata Koirala" />
+            <label className="label-field">First Name <span className="text-red">*</span></label>
+            <input required name="firstName" value={form.firstName} onChange={handleChange} className="input-field" placeholder="e.g. Sujata" />
+            {fieldErrors.first_name && <p className="text-xs text-red mt-1">{fieldErrors.first_name[0]}</p>}
+          </div>
+          <div>
+            <label className="label-field">Last Name <span className="text-red">*</span></label>
+            <input required name="lastName" value={form.lastName} onChange={handleChange} className="input-field" placeholder="e.g. Koirala" />
+            {fieldErrors.last_name && <p className="text-xs text-red mt-1">{fieldErrors.last_name[0]}</p>}
           </div>
           <div>
             <label className="label-field">Email <span className="text-red">*</span></label>
             <input required type="email" name="email" value={form.email} onChange={handleChange} className="input-field" placeholder="you@example.com" />
+            {fieldErrors.email && <p className="text-xs text-red mt-1">{fieldErrors.email[0]}</p>}
           </div>
           <div>
             <label className="label-field">Phone <span className="text-red">*</span></label>
-            <input required type="tel" name="phone" value={form.phone} onChange={handleChange} className="input-field" placeholder="98XXXXXXXX" />
+            <input required type="tel" name="phoneNumber" value={form.phoneNumber} onChange={handleChange} className="input-field" placeholder="+9779812345678" />
+            {fieldErrors.phone_number && <p className="text-xs text-red mt-1">{fieldErrors.phone_number[0]}</p>}
           </div>
           <div>
             <label className="label-field">Faculty <span className="text-red">*</span></label>
             <input required name="faculty" value={form.faculty} onChange={handleChange} className="input-field" placeholder="e.g. Computer Engineering" />
+            {fieldErrors.faculty && <p className="text-xs text-red mt-1">{fieldErrors.faculty[0]}</p>}
           </div>
           <div>
-            <label className="label-field">College <span className="text-red">*</span></label>
-            <select required name="college" value={form.college} onChange={handleChange} className="input-field">
-              <option value="">Select your college</option>
-              {collegeOptions.map((c) => <option key={c} value={c}>{c}</option>)}
-            </select>
+            <label className="label-field">College Name <span className="text-red">*</span></label>
+            <input required name="collegeName" value={form.collegeName} onChange={handleChange} className="input-field" placeholder="e.g. Pulchowk Campus" />
+            {fieldErrors.college_name && <p className="text-xs text-red mt-1">{fieldErrors.college_name[0]}</p>}
           </div>
           <div>
-            <label className="label-field">Academic Year <span className="text-red">*</span></label>
-            <select required name="academicYear" value={form.academicYear} onChange={handleChange} className="input-field">
-              <option value="">Select year</option>
-              {academicYearOptions.map((y) => <option key={y} value={y}>{y}</option>)}
+            <label className="label-field">Current Year / Semester <span className="text-red">*</span></label>
+            <input required name="currentYearOrSemester" value={form.currentYearOrSemester} onChange={handleChange} className="input-field" placeholder="e.g. 4th Semester or Final Year" />
+            {fieldErrors.current_year_or_semester && (
+              <p className="text-xs text-red mt-1">{fieldErrors.current_year_or_semester[0]}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="grid sm:grid-cols-3 gap-6">
+          <div>
+            <label className="label-field">Province <span className="text-red">*</span></label>
+            <select required name="province" value={form.province} onChange={handleProvinceChange} className="input-field">
+              <option value="">Select province</option>
+              {provinces.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
             </select>
+            {fieldErrors.province && <p className="text-xs text-red mt-1">{fieldErrors.province[0]}</p>}
+          </div>
+          <div>
+            <label className="label-field">District <span className="text-red">*</span></label>
+            <select required name="district" value={form.district} onChange={handleDistrictChange} disabled={!form.province} className="input-field disabled:opacity-50">
+              <option value="">Select district</option>
+              {districts.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
+            </select>
+            {fieldErrors.district && <p className="text-xs text-red mt-1">{fieldErrors.district[0]}</p>}
+          </div>
+          <div>
+            <label className="label-field">City <span className="text-red">*</span></label>
+            <select required name="city" value={form.city} onChange={handleChange} disabled={!form.district} className="input-field disabled:opacity-50">
+              <option value="">Select city</option>
+              {cities.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+            </select>
+            {fieldErrors.city && <p className="text-xs text-red mt-1">{fieldErrors.city[0]}</p>}
           </div>
         </div>
 
         <div>
           <label className="label-field">Address <span className="text-red">*</span></label>
-          <input required name="address" value={form.address} onChange={handleChange} className="input-field" placeholder="Start typing your address" />
-          <p className="text-xs text-text-light mt-1.5">
-            Autocomplete note below - this field uses a plain text input for now.
-          </p>
+          <input required name="address" value={form.address} onChange={handleChange} className="input-field" placeholder="Street / tole / municipality" />
+          {fieldErrors.address && <p className="text-xs text-red mt-1">{fieldErrors.address[0]}</p>}
         </div>
 
-        <div>
-          <label className="label-field">College Location <span className="text-red">*</span></label>
-          <input required name="collegeLocation" value={form.collegeLocation} onChange={handleChange} className="input-field" placeholder="Start typing college location" />
-        </div>
-
-        <div>
-          <label className="label-field">Skills</label>
-          <div className="flex flex-wrap gap-2">
-            {skillOptions.map((skill) => (
-              <button
-                type="button"
-                key={skill}
-                onClick={() => toggleSkill(skill)}
-                className={`text-sm px-3.5 py-1.5 rounded-full border transition-colors duration-150 ${
-                  form.skills.includes(skill)
-                    ? "bg-red text-white border-red"
-                    : "bg-transparent text-navy border-border hover:border-navy"
-                }`}
-              >
-                {skill}
-              </button>
-            ))}
+        <div className="grid sm:grid-cols-3 gap-6">
+          <div>
+            <label className="label-field">LinkedIn</label>
+            <input type="url" name="linkedinUrl" value={form.linkedinUrl} onChange={handleChange} className="input-field" placeholder="https://linkedin.com/in/..." />
+            {fieldErrors.linkedin_url && <p className="text-xs text-red mt-1">{fieldErrors.linkedin_url[0]}</p>}
+          </div>
+          <div>
+            <label className="label-field">GitHub</label>
+            <input type="url" name="githubUrl" value={form.githubUrl} onChange={handleChange} className="input-field" placeholder="https://github.com/..." />
+            {fieldErrors.github_url && <p className="text-xs text-red mt-1">{fieldErrors.github_url[0]}</p>}
+          </div>
+          <div>
+            <label className="label-field">Portfolio</label>
+            <input type="url" name="portfolioUrl" value={form.portfolioUrl} onChange={handleChange} className="input-field" placeholder="https://..." />
+            {fieldErrors.portfolio_url && <p className="text-xs text-red mt-1">{fieldErrors.portfolio_url[0]}</p>}
           </div>
         </div>
 
-        <div>
-          <label className="label-field">Motivation <span className="text-red">*</span></label>
-          <textarea required name="motivation" value={form.motivation} onChange={handleChange} rows={4} className="input-field" placeholder="Why do you want to become an ambassador?" />
+        <div className="grid sm:grid-cols-3 gap-6">
+          <div>
+            <label className="label-field">CV <span className="text-red">*</span></label>
+            <input required type="file" name="cv" accept="application/pdf" onChange={handleFileChange} className="input-field file:mr-4 file:py-1.5 file:px-3 file:rounded-btn file:border-0 file:bg-navy file:text-white file:text-sm" />
+            <p className="text-xs text-text-light mt-1.5">PDF only, max 5MB.</p>
+            {fieldErrors.cv && <p className="text-xs text-red mt-1">{fieldErrors.cv[0]}</p>}
+          </div>
+          <div>
+            <label className="label-field">Cover Letter <span className="text-red">*</span></label>
+            <input required type="file" name="coverLetter" accept="application/pdf" onChange={handleFileChange} className="input-field file:mr-4 file:py-1.5 file:px-3 file:rounded-btn file:border-0 file:bg-navy file:text-white file:text-sm" />
+            <p className="text-xs text-text-light mt-1.5">PDF only, max 5MB.</p>
+            {fieldErrors.cover_letter && <p className="text-xs text-red mt-1">{fieldErrors.cover_letter[0]}</p>}
+          </div>
+          <div>
+            <label className="label-field">Recommendation Letter <span className="text-red">*</span></label>
+            <input required type="file" name="collegeRecommendationLetter" accept="application/pdf" onChange={handleFileChange} className="input-field file:mr-4 file:py-1.5 file:px-3 file:rounded-btn file:border-0 file:bg-navy file:text-white file:text-sm" />
+            <p className="text-xs text-text-light mt-1.5">PDF only, max 5MB.</p>
+            {fieldErrors.college_recommendation_letter && (
+              <p className="text-xs text-red mt-1">{fieldErrors.college_recommendation_letter[0]}</p>
+            )}
+          </div>
         </div>
 
-        <div>
-          <label className="label-field">Social Links <span className="text-red">*</span></label>
-          <input required type="url" name="socialLinks" value={form.socialLinks} onChange={handleChange} className="input-field" placeholder="https://linkedin.com/in/your-profile" />
-        </div>
-
-        <div>
-          <label className="label-field">Recommendation Letter</label>
-          <input type="file" className="input-field file:mr-4 file:py-1.5 file:px-3 file:rounded-btn file:border-0 file:bg-navy file:text-white file:text-sm" />
-          <p className="text-xs text-text-light mt-1.5">Optional. PDF preferred, max 5MB.</p>
-        </div>
-
-        <button type="submit" className="btn-primary w-full sm:w-auto">Submit Application</button>
+        <button type="submit" disabled={isSubmitting} className="btn-primary w-full sm:w-auto disabled:opacity-60">
+          {isSubmitting ? "Submitting..." : "Submit Application"}
+        </button>
       </form>
     </div>
   );
