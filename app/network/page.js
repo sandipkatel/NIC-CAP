@@ -1,42 +1,98 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { ambassadors } from "../../data/mockData";
+import { listAmbassadorsAction, getAmbassadorProfileAction } from "@/actions/ambassadorActions";
+
+function fullName(a) {
+  return `${a.first_name} ${a.last_name}`.trim();
+}
+
+function initials(a) {
+  return fullName(a)
+    .split(" ")
+    .map((n) => n[0])
+    .join("");
+}
+
+// "2027 Cohort" -> 2027, so we can sort batches newest-first. Falls back to
+// string order if a batch name doesn't start with a year.
+function batchSortKey(batch) {
+  const match = batch.match(/\d{4}/);
+  return match ? parseInt(match[0], 10) : -Infinity;
+}
 
 export default function NetworkPage() {
-  const [query, setQuery] = useState("");
-  const [cohortMenuOpen, setCohortMenuOpen] = useState(false);
-  const [selectedAmbassador, setSelectedAmbassador] = useState(null);
+  const [ambassadors, setAmbassadors] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
 
-  // All cohorts, most recent first. The current cohort is whichever has the highest cohortOrder.
-  const cohorts = useMemo(() => {
-    const unique = [...new Set(ambassadors.map((a) => a.cohort))];
-    return unique.sort((a, b) => {
-      const orderA = ambassadors.find((x) => x.cohort === a).cohortOrder;
-      const orderB = ambassadors.find((x) => x.cohort === b).cohortOrder;
-      return orderB - orderA;
+  const [query, setQuery] = useState("");
+  const [batchMenuOpen, setBatchMenuOpen] = useState(false);
+  const [selectedBatch, setSelectedBatch] = useState(null);
+
+  const [selectedId, setSelectedId] = useState(null);
+  const [selectedDetail, setSelectedDetail] = useState(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+
+  // Load the public directory once. page_size=100 to approximate "everyone" —
+  // bump this or add real pagination controls if the roster grows past that.
+  useEffect(() => {
+    listAmbassadorsAction("?page_size=100").then((res) => {
+      setIsLoading(false);
+      if (!res.ok) {
+        setLoadError(res.message || "Couldn't load the ambassador directory.");
+        return;
+      }
+      console.log("Loaded ambassadors:", res.data);
+      setAmbassadors(res.data);
     });
   }, []);
 
-  const [selectedCohort, setSelectedCohort] = useState(cohorts[0]);
+  const batches = useMemo(() => {
+    const unique = [...new Set(ambassadors.map((a) => a.batch))];
+    return unique.sort((a, b) => batchSortKey(b) - batchSortKey(a));
+  }, [ambassadors]);
+
+  // Default to the newest batch once the directory has loaded.
+  useEffect(() => {
+    if (batches.length > 0 && !selectedBatch) {
+      setSelectedBatch(batches[0]);
+    }
+  }, [batches, selectedBatch]);
 
   const filtered = ambassadors.filter((a) => {
     const q = query.toLowerCase();
     const matchesQuery =
-      a.name.toLowerCase().includes(q) ||
-      a.college.toLowerCase().includes(q) ||
-      a.skills.some((s) => s.toLowerCase().includes(q));
-    return a.cohort === selectedCohort && matchesQuery;
+      fullName(a).toLowerCase().includes(q) ||
+      a.college_name.toLowerCase().includes(q) ||
+      a.faculty.toLowerCase().includes(q);
+    return a.batch === selectedBatch && matchesQuery;
   });
 
-  const isCurrentCohort = selectedCohort === cohorts[0];
+  const isCurrentBatch = selectedBatch === batches[0];
+
+  const openAmbassador = async (a) => {
+    setSelectedId(a.id);
+    setSelectedDetail(null);
+    setDetailLoading(true);
+    const res = await getAmbassadorProfileAction(a.id);
+    setDetailLoading(false);
+    if (res.ok) setSelectedDetail(res.data);
+  };
+
+  const closeModal = () => {
+    setSelectedId(null);
+    setSelectedDetail(null);
+  };
 
   // Close modal on Escape
   useEffect(() => {
-    const onKey = (e) => e.key === "Escape" && setSelectedAmbassador(null);
+    const onKey = (e) => e.key === "Escape" && closeModal();
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  const selectedCard = ambassadors.find((a) => a.id === selectedId);
 
   return (
     <div className="container-page py-16">
@@ -46,132 +102,121 @@ export default function NetworkPage() {
           <h1 className="section-title mb-3">Meet the ambassadors</h1>
         </div>
 
-        {/* Cohort selector, top right */}
-        <div className="relative shrink-0">
-          <button
-            onClick={() => setCohortMenuOpen((o) => !o)}
-            className="flex items-center gap-2 border border-border rounded-full px-4 py-2 text-sm font-semibold text-navy hover:bg-bg transition"
-          >
-            {selectedCohort}
-            {isCurrentCohort && (
-              <span className="text-[10px] bg-blue/10 text-blue px-2 py-0.5 rounded-full font-bold uppercase tracking-wide">
-                Current
-              </span>
-            )}
-            <span className={`transition-transform ${cohortMenuOpen ? "rotate-180" : ""}`}>▾</span>
-          </button>
+        {/* Batch selector, top right */}
+        {batches.length > 0 && (
+          <div className="relative shrink-0">
+            <button
+              onClick={() => setBatchMenuOpen((o) => !o)}
+              className="flex items-center gap-2 border border-border rounded-full px-4 py-2 text-sm font-semibold text-navy hover:bg-bg transition"
+            >
+              {selectedBatch}
+              {isCurrentBatch && (
+                <span className="text-[10px] bg-blue/10 text-blue px-2 py-0.5 rounded-full font-bold uppercase tracking-wide">
+                  Current
+                </span>
+              )}
+              <span className={`transition-transform ${batchMenuOpen ? "rotate-180" : ""}`}>▾</span>
+            </button>
 
-          {cohortMenuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white border border-border rounded-xl shadow-lg overflow-hidden z-20">
-              {cohorts.map((c, i) => (
-                <button
-                  key={c}
-                  onClick={() => {
-                    setSelectedCohort(c);
-                    setCohortMenuOpen(false);
-                  }}
-                  className={`w-full text-left px-4 py-2.5 text-sm hover:bg-bg transition flex items-center justify-between ${
-                    c === selectedCohort ? "text-red font-semibold" : "text-navy"
-                  }`}
-                >
-                  {c}
-                  {i === 0 && <span className="text-[10px] text-text-light">Current</span>}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+            {batchMenuOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white border border-border rounded-xl shadow-lg overflow-hidden z-20">
+                {batches.map((b, i) => (
+                  <button
+                    key={b}
+                    onClick={() => {
+                      setSelectedBatch(b);
+                      setBatchMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2.5 text-sm hover:bg-bg transition flex items-center justify-between ${
+                      b === selectedBatch ? "text-red font-semibold" : "text-navy"
+                    }`}
+                  >
+                    {b}
+                    {i === 0 && <span className="text-[10px] text-text-light">Current</span>}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <p className="text-text-light mb-8 max-w-2xl">
-        Lorem epsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc ut laoreet tincidunt, nunc nisl aliquam nunc, eget aliquam nisl nunc vel nisl. Sed euismod, nunc ut laoreet tincidunt, nunc nisl aliquam nunc, eget aliquam nisl nunc vel nisl.
+        Browse ambassadors by batch, or search by name, college, or faculty.
       </p>
 
       <input
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search by name, college, or skill..."
+        placeholder="Search by name, college, or faculty..."
         className="input-field max-w-md mb-10"
       />
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {filtered.map((a) => (
-          <div
-            key={a.id}
-            onClick={() => setSelectedAmbassador(a)}
-            className="group relative bg-white border border-border rounded-2xl overflow-hidden cursor-pointer transition hover:shadow-lg hover:-translate-y-1"
-          >
-            {/* Photo — the focal point of the card */}
-            <div className="relative w-full aspect-[4/4] bg-bg overflow-hidden">
-              {a.photo ? (
-                <img
-                  src={a.photo}
-                  alt={a.name}
-                  className="w-full h-full object-cover transition duration-500 group-hover:scale-105"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue/10 to-navy/10">
-                  <span className="text-6xl font-bold text-navy/25">
-                    {a.name.split(" ").map((n) => n[0]).join("")}
-                  </span>
+      {isLoading && <p className="text-text-light">Loading ambassadors...</p>}
+      {loadError && <p className="text-red">{loadError}</p>}
+
+      {!isLoading && !loadError && (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {filtered.map((a) => (
+            <div
+              key={a.id}
+              onClick={() => openAmbassador(a)}
+              className="group relative bg-white border border-border rounded-2xl overflow-hidden cursor-pointer transition hover:shadow-lg hover:-translate-y-1"
+            >
+              {/* Photo — the focal point of the card */}
+              <div className="relative w-full aspect-[4/4] bg-bg overflow-hidden">
+                {a.profile_photo ? (
+                  <img
+                    src={a.profile_photo}
+                    alt={fullName(a)}
+                    className="w-full h-full object-cover transition duration-500 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue/10 to-navy/10">
+                    <span className="text-6xl font-bold text-navy/25">{initials(a)}</span>
+                  </div>
+                )}
+
+                {/* Gradient + name/college overlay */}
+                <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-navy/90 via-navy/40 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-4">
+                  <h3 className="font-semibold text-white text-lg leading-tight drop-shadow-sm">
+                    {fullName(a)}
+                  </h3>
+                  <p className="text-white/85 text-sm">{a.college_name}</p>
                 </div>
-              )}
+              </div>
 
-              {/* Gradient + name/college overlay */}
-              <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-navy/90 via-navy/40 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-4">
-                <h3 className="font-semibold text-white text-lg leading-tight drop-shadow-sm">
-                  {a.name}
-                </h3>
-                <p className="text-white/85 text-sm">{a.college}</p>
+              {/* Details */}
+              <div className="p-5">
+                <p className="text-text-light text-sm mb-3">{a.faculty}</p>
+                <div className="flex items-center justify-end mt-4">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openAmbassador(a);
+                    }}
+                    className="text-navy text-sm font-semibold hover:underline"
+                  >
+                    Know more
+                  </button>
+                </div>
               </div>
             </div>
-
-            {/* Details */}
-            <div className="p-5">
-              <p className="text-text-light text-sm mb-3">📍 {a.location}</p>
-              <div className="flex flex-wrap gap-1.5 mb-3">
-                {a.skills.map((s) => (
-                  <span key={s} className="text-xs bg-blue/10 text-blue px-2.5 py-1 rounded-full">
-                    {s}
-                  </span>
-                ))}
-              </div>
-              <div className="flex items-center justify-between mt-4">
-                <a
-                  href={a.linkedin}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="text-red text-sm font-semibold hover:underline"
-                >
-                  View LinkedIn →
-                </a>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedAmbassador(a);
-                  }}
-                  className="text-navy text-sm font-semibold hover:underline"
-                >
-                  Know more
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-        {filtered.length === 0 && (
-          <p className="text-text-light col-span-full">
-            No ambassadors in {selectedCohort} match &quot;{query}&quot;.
-          </p>
-        )}
-      </div>
+          ))}
+          {filtered.length === 0 && (
+            <p className="text-text-light col-span-full">
+              No ambassadors in {selectedBatch} match &quot;{query}&quot;.
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Detail modal */}
-      {selectedAmbassador && (
+      {selectedCard && (
         <div
           className="fixed inset-0 bg-navy/40 flex items-center justify-center p-4 z-50"
-          onClick={() => setSelectedAmbassador(null)}
+          onClick={closeModal}
         >
           <div
             className="bg-white rounded-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto overflow-x-hidden"
@@ -179,83 +224,85 @@ export default function NetworkPage() {
           >
             {/* Photo banner */}
             <div className="relative w-full aspect-[16/9] bg-bg">
-              {selectedAmbassador.photo ? (
+              {selectedCard.profile_photo ? (
                 <img
-                  src={selectedAmbassador.photo}
-                  alt={selectedAmbassador.name}
+                  src={selectedCard.profile_photo}
+                  alt={fullName(selectedCard)}
                   className="w-full h-full object-cover rounded-t-2xl"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue/10 to-navy/10 rounded-t-2xl">
-                  <span className="text-6xl font-bold text-navy/25">
-                    {selectedAmbassador.name.split(" ").map((n) => n[0]).join("")}
-                  </span>
+                  <span className="text-6xl font-bold text-navy/25">{initials(selectedCard)}</span>
                 </div>
               )}
               <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-navy/90 via-navy/40 to-transparent rounded-t-2xl" />
               <div className="absolute inset-x-0 bottom-0 p-5">
                 <h2 className="font-bold text-white text-xl leading-tight drop-shadow-sm">
-                  {selectedAmbassador.name}
+                  {fullName(selectedCard)}
                 </h2>
-                <p className="text-white/85 text-sm">{selectedAmbassador.college}</p>
-                <p className="text-white/70 text-xs mt-0.5">{selectedAmbassador.cohort}</p>
+                <p className="text-white/85 text-sm">{selectedCard.college_name}</p>
+                <p className="text-white/70 text-xs mt-0.5">{selectedCard.batch}</p>
               </div>
             </div>
 
             <div className="p-8">
-            <div className="space-y-5">
-              <div>
-                <p className="eyebrow mb-2">Programs organized</p>
-                <div className="space-y-3">
-                  {selectedAmbassador.program.map((p, i) => (
-                    <div
-                      key={i}
-                      className="flex gap-3 border border-border rounded-xl p-3"
-                    >
-                      {p.image && (
-                        <img
-                          src={p.image}
-                          alt={p.name}
-                          className="w-24 h-30 rounded-lg object-cover shrink-0"
-                        />
-                      ) }
-                      <div>
-                        <p className="text-navy text-sm font-semibold mb-0.5">{p.name}</p>
-                        <p className="text-text-light text-sm">{p.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <p className="eyebrow mb-1">Contribution to NIC</p>
-                <p className="text-text-light text-sm">{selectedAmbassador.contribution}</p>
-              </div>
-              <div>
-                <p className="eyebrow mb-1">What they gained</p>
-                <p className="text-text-light text-sm">{selectedAmbassador.gained}</p>
-              </div>
-              <div className="border-l-2 border-red pl-4">
-                <p className="text-navy text-sm italic">&quot;{selectedAmbassador.testimonial}&quot;</p>
-              </div>
-            </div>
+              {detailLoading && <p className="text-text-light text-sm">Loading profile...</p>}
 
-            <div className="flex items-center justify-between mt-8">
-              <a
-                href={selectedAmbassador.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                className="text-red text-sm font-semibold hover:underline"
-              >
-                View LinkedIn →
-              </a>
-              <button
-                onClick={() => setSelectedAmbassador(null)}
-                className="text-sm font-semibold text-navy border border-border rounded-full px-4 py-2 hover:bg-bg transition"
-              >
-                Close
-              </button>
-            </div>
+              {!detailLoading && selectedDetail && (
+                <div className="space-y-5">
+                  <div>
+                    <p className="eyebrow mb-1">Faculty</p>
+                    <p className="text-text-light text-sm">{selectedDetail.faculty}</p>
+                  </div>
+                  {selectedDetail.bio && (
+                    <div>
+                      <p className="eyebrow mb-1">About</p>
+                      <p className="text-text-light text-sm">{selectedDetail.bio}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="flex items-center justify-between mt-8">
+                <div className="flex items-center gap-4">
+                  {selectedDetail?.linkedin_url && (
+                    <a
+                      href={selectedDetail.linkedin_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-red text-sm font-semibold hover:underline"
+                    >
+                      LinkedIn →
+                    </a>
+                  )}
+                  {selectedDetail?.github_url && (
+                    <a
+                      href={selectedDetail.github_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-navy text-sm font-semibold hover:underline"
+                    >
+                      GitHub →
+                    </a>
+                  )}
+                  {selectedDetail?.portfolio_url && (
+                    <a
+                      href={selectedDetail.portfolio_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-navy text-sm font-semibold hover:underline"
+                    >
+                      Portfolio →
+                    </a>
+                  )}
+                </div>
+                <button
+                  onClick={closeModal}
+                  className="text-sm font-semibold text-navy border border-border rounded-full px-4 py-2 hover:bg-bg transition"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </div>
