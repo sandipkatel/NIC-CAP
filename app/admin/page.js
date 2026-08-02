@@ -27,6 +27,7 @@ export default function AdminPage() {
         router.push("/login");
         return;
       }
+      console.log("Current user role:", userRes.data);
       if (userRes.data.role !== "ADMIN" && userRes.data.role !== "admin") {
         setIsLoading(false);
         setLoadError("This page is only available to admin accounts.");
@@ -65,16 +66,6 @@ export default function AdminPage() {
   if (isLoading) {
     return <div className="container-page py-16 max-w-4xl">Loading admin panel...</div>;
   }
-
-  // if (loadError) {
-  //   return (
-  //     <div className="container-page py-16 max-w-4xl">
-  //       <div className="card">
-  //         <p className="text-red">{loadError}</p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="container-page py-16 max-w-4xl">

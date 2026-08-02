@@ -12,7 +12,7 @@ export function middleware(request) {
   const refreshToken = request.cookies.get("refresh_token")?.value;
 
   if (!accessToken && !refreshToken) {
-    const loginUrl = new URL("/", request.url);
+    const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("session", "expired");
     return NextResponse.redirect(loginUrl);
   }
