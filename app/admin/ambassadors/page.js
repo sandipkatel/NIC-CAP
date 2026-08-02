@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { getCurrentUserAction } from "@/actions/authActions";
 import { adminListApplicationsAction } from "@/actions/applicationActions";
 import {
@@ -47,7 +48,8 @@ export default function AdminAmbassadorsPage() {
         router.push("/login");
         return;
       }
-      if (res.data.role !== "ADMIN") {
+      console.log("Current user role:", res.data.role);
+      if (res.data.role !== "ADMIN" && res.data.role !== "admin") {
         setLoadError("This page is only available to admin accounts.");
         setIsLoading(false);
         return;
@@ -145,6 +147,7 @@ export default function AdminAmbassadorsPage() {
     <div className="container-page py-16 max-w-5xl">
       <div className="flex items-start justify-between gap-4 mb-6">
         <div>
+          <Link href="/admin" className="text-sm text-navy hover:underline mb-3 inline-block">← Admin Panel</Link>
           <p className="eyebrow mb-3">Administration</p>
           <h1 className="section-title">Manage Ambassadors</h1>
         </div>

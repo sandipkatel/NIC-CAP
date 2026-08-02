@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { getCurrentUserAction } from "@/actions/authActions";
 import { adminListApplicationsAction, adminDecideApplicationAction } from "@/actions/applicationActions";
 import StatusBadge from "@/components/admin/StatusBadge";
@@ -41,7 +42,7 @@ export default function AdminApplicationsPage() {
         router.push("/login");
         return;
       }
-      if (res.data.role !== "ADMIN") {
+      if (res.data.role !== "ADMIN" && res.data.role !== "admin") {
         setLoadError("This page is only available to admin accounts.");
         setIsLoading(false);
         return;
@@ -114,6 +115,7 @@ export default function AdminApplicationsPage() {
 
   return (
     <div className="container-page py-16 max-w-5xl">
+      <Link href="/admin" className="text-sm text-navy hover:underline mb-3 inline-block">← Admin Panel</Link>
       <p className="eyebrow mb-3">Administration</p>
       <h1 className="section-title mb-6">Review Applications</h1>
 

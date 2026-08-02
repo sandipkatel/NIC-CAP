@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { getCurrentUserAction } from "@/actions/authActions";
+import { getCurrentUserAction, logoutAction } from "@/actions/authActions";
 import { adminListApplicationsAction } from "@/actions/applicationActions";
 import { adminListAmbassadorsAction } from "@/actions/ambassadorActions";
 import { adminListVerificationsAction } from "@/actions/verificationActions";
@@ -12,6 +12,7 @@ export default function AdminPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [counts, setCounts] = useState({
     totalAmbassadors: 0,
     totalApplications: 0,
@@ -26,7 +27,7 @@ export default function AdminPage() {
         router.push("/login");
         return;
       }
-      if (userRes.data.role !== "admin" && userRes.data.role !== "ADMIN") {
+      if (userRes.data.role !== "ADMIN" && userRes.data.role !== "admin") {
         setIsLoading(false);
         setLoadError("This page is only available to admin accounts.");
         return;
@@ -35,16 +36,12 @@ export default function AdminPage() {
       const [ambassadorsRes, allAppsRes, pendingAppsRes, pendingEditsRes] = await Promise.all([
         adminListAmbassadorsAction("?page_size=1"),
         adminListApplicationsAction("?page_size=1"),
-        adminListApplicationsAction("?status=Pending&page_size=1"),
-        adminListVerificationsAction("?status=Pending&page_size=1"),
+        adminListApplicationsAction("?status=PENDING&page_size=1"),
+        adminListVerificationsAction("?status=PENDING&page_size=1"),
       ]);
 
       setIsLoading(false);
 
-      console.log("Ambassadors response:", ambassadorsRes);
-      console.log("All applications response:", allAppsRes);
-      console.log("Pending applications response:", pendingAppsRes);
-      console.log("Pending profile edits response:", pendingEditsRes);
       if (!ambassadorsRes.ok || !allAppsRes.ok) {
         setLoadError("Couldn't load admin summary data.");
         return;
@@ -59,25 +56,42 @@ export default function AdminPage() {
     })();
   }, [router]);
 
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    await logoutAction();
+    router.push("/login");
+  };
+
   if (isLoading) {
     return <div className="container-page py-16 max-w-4xl">Loading admin panel...</div>;
   }
 
-  if (loadError) {
-    return (
-      <div className="container-page py-16 max-w-4xl">
-        <div className="card">
-          <p className="text-red">{loadError}</p>
-        </div>
-      </div>
-    );
-  }
+  // if (loadError) {
+  //   return (
+  //     <div className="container-page py-16 max-w-4xl">
+  //       <div className="card">
+  //         <p className="text-red">{loadError}</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="container-page py-16 max-w-4xl">
-      <p className="eyebrow mb-3">Administration</p>
-      <h1 className="section-title mb-6">Admin Panel</h1>
-
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="eyebrow mb-3">Administration</p>
+          <h1 className="section-title mb-6">Admin Panel</h1>
+        </div>
+        <button
+          onClick={handleLogout}
+          disabled={isLoggingOut}
+          className="text-sm font-semibold text-navy border border-border rounded-full px-4 py-2 hover:bg-bg transition disabled:opacity-60 shrink-0"
+        >
+          {isLoggingOut ? "Signing out..." : "Sign out"}
+        </button>
+      </div>
+     {loadError && <p className="text-red mb-4">{loadError}</p>}
       <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 my-8">
         <div className="card text-center">
           <p className="text-2xl font-extrabold text-navy">{counts.totalAmbassadors}</p>
