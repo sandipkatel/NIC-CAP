@@ -1,6 +1,9 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+// TODO: Ambassador are also able to create, draft, publish and report event they have performed.
+
+
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentUserAction, logoutAction } from "@/actions/authActions";
 import { getMyAmbassadorProfileAction, listMyProfileEditsAction } from "@/actions/ambassadorActions";
@@ -17,48 +20,58 @@ export default function DashboardPage() {
   const [loadError, setLoadError] = useState("");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  const loadEdits = useCallback(async () => {
-    const res = await listMyProfileEditsAction();
-    if (res.ok) setEdits(res.data.results);
-  }, []);
+ const loadEdits = useCallback(async () => {
+  const res = await listMyProfileEditsAction();
+  if (res.ok) {
+    setEdits(res.data ?? []);
+  }
+}, []);
 
-  useEffect(() => {
-    (async () => {
-      const userRes = await getCurrentUserAction();
-      if (!userRes.ok) {
-        router.push("/login");
-        return;
-      }
+useEffect(() => {
+  let ignore = false;
 
-      // Safety net in case someone lands here directly without finishing the
-      // forced first-login password change.
-      if (userRes.data.must_change_password) {
-        router.push("/change-password");
-        return;
-      }
+  (async () => {
+    const userRes = await getCurrentUserAction();
+    if (!userRes.ok) {
+      router.push("/login");
+      return;
+    }
 
-      if (userRes.data.role !== "AMBASSADOR" && userRes.data.role !== "ambassador") {
+    if (userRes.data.must_change_password) {
+      router.push("/change-password");
+      return;
+    }
+
+    if (userRes.data.role !== "AMBASSADOR" && userRes.data.role !== "ambassador") {
+      if (!ignore) {
         setIsLoading(false);
         setLoadError("This dashboard is only available to ambassador accounts.");
-        return;
       }
+      return;
+    }
 
-      const [profileRes, editsRes] = await Promise.all([
-        getMyAmbassadorProfileAction(),
-        listMyProfileEditsAction(),
-      ]);
+    const [profileRes, editsRes] = await Promise.all([
+      getMyAmbassadorProfileAction(),
+      listMyProfileEditsAction(),
+    ]);
 
-      setIsLoading(false);
+    if (ignore) return; // component unmounted or a newer effect run took over
 
-      if (!profileRes.ok) {
-        setLoadError(profileRes.message || "Couldn't load your ambassador profile.");
-        return;
-      }
+    setIsLoading(false);
 
-      setProfile(profileRes.data);
-      if (editsRes.ok) setEdits(editsRes.data.results);
-    })();
-  }, [router]);
+    if (!profileRes.ok) {
+      setLoadError(profileRes.message || "Couldn't load your ambassador profile.");
+      return;
+    }
+
+    setProfile(profileRes.data);
+  setEdits(editsRes.ok ? (editsRes.data ?? []) : []);
+  })();
+
+  return () => {
+    ignore = true;
+  };
+}, [router]);
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -104,7 +117,7 @@ export default function DashboardPage() {
     );
   }
 
-  const hasPendingEdit = edits.some((e) => e.status === "SUBMITTED");
+  const hasPendingEdit = (edits ?? []).some((e) => e.status === "Submitted" || e.status === "SUBMITTED");
 
   return (
     <div className="container-page py-16 max-w-4xl">

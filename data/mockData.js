@@ -11,11 +11,11 @@
 // (see public/images/hero/README.md), and this data is the only place you
 // need to update if filenames change.
 export const heroImages = [
-  { id: 1, src: "/carousel/1.png", alt: "Ambassadors leading a campus workshop", tint: "bg-navy-tint" },
-  { id: 2, src: "/carousel/2.png", alt: "Students collaborating at a campus hackathon", tint: "bg-navy" },
-  { id: 3, src: "/carousel/3.png", alt: "Innovation bootcamp session", tint: "bg-navy-tint" },
-  { id: 4, src: "/carousel/4.png", alt: "Ambassador network meetup", tint: "bg-navy" },
-  { id: 5, src: "/carousel/5.png", alt: "Award ceremony for top ambassadors", tint: "bg-navy-tint" },
+  { id: 1, src: "/carousel/1.jpeg", alt: "Ambassadors leading a campus workshop", tint: "bg-navy-tint" },
+  { id: 2, src: "/carousel/2.jpeg", alt: "Students collaborating at a campus hackathon", tint: "bg-navy" },
+  { id: 3, src: "/carousel/3.jpeg", alt: "Innovation bootcamp session", tint: "bg-navy-tint" },
+  { id: 4, src: "/carousel/4.jpeg", alt: "Ambassador network meetup", tint: "bg-navy" },
+  { id: 5, src: "/carousel/5.jpeg", alt: "Award ceremony for top ambassadors", tint: "bg-navy-tint" },
 ];
 
 export const stats = [
@@ -126,7 +126,7 @@ export const ambassadors = [
   {
     id: 1,
     name: "Sandip Katel",
-    photo: "./carousel/1.png",
+    photo: "./carousel/1.jpeg",
     college: "IOE, Pulchowk Campus",
     location: "Kathmandu, Nepal",
     skills: ["Community Building", "Public Speaking"],
@@ -138,13 +138,13 @@ export const ambassadors = [
         name: "Startup Sprint Bootcamp",
         description:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Organized a three-day ideation bootcamp bringing together students from six colleges to prototype early-stage startup ideas.",
-        image: "./carousel/5.png",
+        image: "./carousel/5.jpeg",
       },
       {
         name: "Workshop on Apache Kafka",
         description:
           "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, introducing event-driven architecture concepts to over forty engineering students.",
-        image: "./carousel/4.png",
+        image: "./carousel/4.jpeg",
       },
     ],
     contribution:
@@ -157,7 +157,7 @@ export const ambassadors = [
   {
     id: 2,
     name: "Purnima Wagle",
-    photo: "./carousel/2.png",
+    photo: "./carousel/2.jpeg",
     college: "Prithvi Narayan Campus",
     location: "Pokhara, Nepal",
     skills: ["Design", "Content Writing"],
@@ -182,7 +182,7 @@ export const ambassadors = [
   {
     id: 3,
     name: "Ayusha Hamal",
-    photo: "./carousel/3.png",
+    photo: "./carousel/3.jpeg",
     college: "Tribhuvan University",
     location: "Pokhara, Nepal",
     skills: ["Outreach", "Data Analysis"],
@@ -194,7 +194,7 @@ export const ambassadors = [
         name: "Alumni Mentorship Match",
         description:
           "Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur, launching a mentorship-matching program between alumni and current students.",
-        image: "./carousel/4.png",
+        image: "./carousel/4.jpeg",
       },
       {
         name: "Data for Good Meetup",
@@ -213,7 +213,7 @@ export const ambassadors = [
   {
     id: 3,
     name: "Prakriti",
-    photo: "./carousel/4.png",
+    photo: "./carousel/4.jpeg",
     college: "Tribhuvan University",
     location: "Pokhara, Nepal",
     skills: ["Outreach", "Data Analysis"],
@@ -225,7 +225,7 @@ export const ambassadors = [
         name: "Alumni Mentorship Match",
         description:
           "Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur, launching a mentorship-matching program between alumni and current students.",
-        image: "./carousel/4.png",
+        image: "./carousel/4.jpeg",
       },
       {
         name: "Data for Good Meetup",

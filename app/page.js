@@ -6,7 +6,7 @@ export default function HomePage() {
   return (
     <>
      {/* FR-1.1 - Hero */}
-      <section className="relative bg-navy text-white overflow-hidden">
+      <section className="relative bg-navy text-white overflow-hidden opacity-95">
         {/* Decorative glow accents for depth */}
         <div className="pointer-events-none absolute -top-24 -right-24 w-96 h-96 bg-red/20 rounded-full blur-3xl" />
         <div className="pointer-events-none absolute bottom-0 -left-24 w-72 h-72 bg-blue/20 rounded-full blur-3xl" />

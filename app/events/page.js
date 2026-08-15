@@ -1,3 +1,5 @@
+// TODO: Retrieve events from backend using API: /events/ and /events/{id}/ endpoints. For now, we are using mock data from data/mockData.js.
+
 import { upcomingEvents, pastEvents } from "../../data/mockData";
 
 function formatDate(dateStr) {

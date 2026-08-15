@@ -22,12 +22,12 @@ export default function HeroImageStack() {
 
   return (
     <div className="hidden md:flex justify-center">
-      <div className="relative w-full max-w-xs aspect-square">
+      <div className="relative w-full max-w-lg aspect-[4/3]">
         {order.map((id, position) => {
           const image = heroImages.find((c) => c.id === id);
           const offset = position * 16;
           const rotate = position === 0 ? 0 : -10 + position * 5;
-          const scale = 1 - position * 0.06;
+          const scale = 1 - position * 0.06;  
           const opacity = 1 - position * 0.15;
 
           return (
@@ -50,7 +50,7 @@ export default function HeroImageStack() {
                   src={image.src}
                   alt={image.alt}
                   fill
-                  sizes="(min-width: 768px) 384px, 0px"
+                  sizes="(min-width: 768px) 512px, 0px"
                   className="object-cover"
                   priority={position === 0}
                   onError={() => setFailed((prev) => ({ ...prev, [id]: true }))}
