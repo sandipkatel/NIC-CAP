@@ -52,22 +52,22 @@ export default function AdminApplicationsPage() {
   }, [router]);
 
   const loadApplications = useCallback(async () => {
-    setIsLoading(true);
-    const params = new URLSearchParams({ page: String(page), page_size: "20" });
-    if (statusFilter) params.set("status", statusFilter);
+  setIsLoading(true);
+  const params = new URLSearchParams({ page: String(page), page_size: "20" });
+  if (statusFilter) params.set("status", statusFilter);
 
-    const res = await adminListApplicationsAction(`?${params.toString()}`);
-    setIsLoading(false);
+  const res = await adminListApplicationsAction(`?${params.toString()}`);
+  setIsLoading(false);
 
-    if (!res.ok) {
-      setLoadError(res.message || "Couldn't load applications.");
-      return;
-    }
-    setLoadError("");
-    setApplications(res.data.results);
-    setHasNext(Boolean(res.data.next));
-    setHasPrevious(Boolean(res.data.previous));
-  }, [page, statusFilter]);
+  if (!res.ok) {
+    setLoadError(res.message || "Couldn't load applications.");
+    return;
+  }
+  setLoadError("");
+  setApplications(res.data ?? []);
+  setHasNext(Boolean(res.data?.next));
+  setHasPrevious(Boolean(res.data?.previous));
+}, [page, statusFilter]);
 
   useEffect(() => {
     if (isAuthorized) loadApplications();
@@ -111,7 +111,7 @@ export default function AdminApplicationsPage() {
     );
   }
 
-  const reviewingApp = applications.find((a) => a.id === reviewingId);
+  const reviewingApp = (applications ?? []).find((a) => a.id === reviewingId);
 
   return (
     <div className="container-page py-16 max-w-5xl">
@@ -142,7 +142,7 @@ export default function AdminApplicationsPage() {
       {!isLoading && !loadError && (
         <>
           <div className="space-y-3">
-            {applications.map((app) => (
+            {(applications ?? []).map((app) => (
               <div key={app.id} className="card flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
                 <div>
                   <p className="font-semibold text-navy">{app.first_name} {app.last_name}</p>
@@ -162,7 +162,7 @@ export default function AdminApplicationsPage() {
                 </div>
               </div>
             ))}
-            {applications.length === 0 && <p className="text-text-light">No applications match this filter.</p>}
+            {(applications ?? []).length === 0 && <p className="text-text-light">No applications match this filter.</p>}
           </div>
 
           <div className="flex justify-center gap-3 mt-8">
