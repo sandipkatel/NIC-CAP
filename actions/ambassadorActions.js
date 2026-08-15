@@ -38,3 +38,7 @@ export async function adminListAmbassadorsAction(query = "") {
 export async function adminGetAmbassadorAction(id) {
   return withErrorHandling(() => ambassadorService.adminDetail(id));
 }
+
+export async function listAmbassadorsBatchAction() {
+  return withErrorHandling(() => ambassadorService.listBatch(query));
+}

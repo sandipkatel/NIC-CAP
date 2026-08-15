@@ -40,7 +40,12 @@ export default function AdminPage() {
         adminListApplicationsAction("?status=PENDING&page_size=1"),
         adminListVerificationsAction("?status=PENDING&page_size=1"),
       ]);
-
+      console.log("Admin summary data:", {
+        ambassadorsRes,
+        allAppsRes,
+        pendingAppsRes,
+        pendingEditsRes,
+      });
       setIsLoading(false);
 
       if (!ambassadorsRes.ok || !allAppsRes.ok) {
@@ -49,10 +54,10 @@ export default function AdminPage() {
       }
 
       setCounts({
-        totalAmbassadors: ambassadorsRes.data.count,
-        totalApplications: allAppsRes.data.count,
-        pendingApplications: pendingAppsRes.ok ? pendingAppsRes.data.count : 0,
-        pendingProfileEdits: pendingEditsRes.ok ? pendingEditsRes.data.count : 0,
+        totalAmbassadors: Array.isArray(ambassadorsRes.data) ? ambassadorsRes.data.length : 0,
+        totalApplications: Array.isArray(allAppsRes.data) ? allAppsRes.data.length : 0,
+        pendingApplications: pendingAppsRes.ok && Array.isArray(pendingAppsRes.data) ? pendingAppsRes.data.length : 0,
+        pendingProfileEdits: pendingEditsRes.ok && Array.isArray(pendingEditsRes.data) ? pendingEditsRes.data.length : 0,
       });
     })();
   }, [router]);

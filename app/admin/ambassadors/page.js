@@ -1,5 +1,7 @@
 "use client";
 
+//TODO: listAmbassadorsBatchAction shoul be used to display batch dropdown at provision form (may need to correct api end point also)
+
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -9,6 +11,7 @@ import {
   adminListAmbassadorsAction,
   adminGetAmbassadorAction,
   adminProvisionAmbassadorAction,
+  listAmbassadorsBatchAction,
 } from "@/actions/ambassadorActions";
 import StatusBadge from "@/components/admin/StatusBadge";
 
@@ -59,23 +62,38 @@ export default function AdminAmbassadorsPage() {
   }, [router]);
 
   const loadAmbassadors = useCallback(async () => {
-    setIsLoading(true);
-    const res = await adminListAmbassadorsAction(`?page=${page}&page_size=20`);
-    setIsLoading(false);
+  setIsLoading(true);
+  const res = await adminListAmbassadorsAction(`?page=${page}&page_size=20`);
+  setIsLoading(false);
 
-    if (!res.ok) {
-      setLoadError(res.message || "Couldn't load ambassadors.");
-      return;
-    }
-    setLoadError("");
-    setAmbassadors(res.data.results);
-    setHasNext(Boolean(res.data.next));
-    setHasPrevious(Boolean(res.data.previous));
-  }, [page]);
+  if (!res.ok) {
+    setLoadError(res.message || "Couldn't load ambassadors.");
+    return;
+  }
+  setLoadError("");
+  console.log("adminListAmbassadorsAction result:", res); // Debugging log
+  setAmbassadors(res.data ?? []);
+  setHasNext(Boolean(res.data?.next));
+  setHasPrevious(Boolean(res.data?.previous));
+}, [page]);
+
+const loadBatches = useCallback(async () => {
+  const res = await listAmbassadorsBatchAction();
+  if (!res.ok) {
+    console.error("Error loading batches:", res.message);
+    return;
+  } else {
+    console.log("listAmbassadorsBatchAction result:", res); // Debugging log
+  }
+  setApprovedApplications(res.data ?? []);
+}, []);
 
   useEffect(() => {
-    if (isAuthorized) loadAmbassadors();
-  }, [isAuthorized, loadAmbassadors]);
+    if (isAuthorized) {
+      loadAmbassadors();
+      loadBatches();
+    }
+  }, [isAuthorized, loadAmbassadors, loadBatches]);
 
   const openDetail = async (id) => {
     setSelectedId(id);
@@ -92,18 +110,15 @@ export default function AdminAmbassadorsPage() {
   };
 
   const openProvisionForm = async () => {
-    setShowProvisionForm(true);
-    setProvisionForm(initialProvisionForm);
-    setProvisionError("");
-    setProvisionSuccess("");
-    setProvisionFieldErrors({});
+  setShowProvisionForm(true);
+  setProvisionForm(initialProvisionForm);
+  setProvisionError("");
+  setProvisionSuccess("");
+  setProvisionFieldErrors({});
 
-    // No endpoint distinguishes "approved but not yet provisioned" — this list
-    // may include applications already turned into ambassadors. Re-using one
-    // will surface the backend's own error, which we'll show below the form.
-    const res = await adminListApplicationsAction("?status=APPROVED&page_size=100");
-    if (res.ok) setApprovedApplications(res.data.results);
-  };
+  const res = await adminListApplicationsAction("?status=APPROVED&page_size=100");
+  if (res.ok) setApprovedApplications(res.data ?? []);
+};
 
   const handleProvisionChange = (e) => {
     const { name, value } = e.target;
@@ -160,7 +175,7 @@ export default function AdminAmbassadorsPage() {
       {!isLoading && !loadError && (
         <>
           <div className="space-y-3">
-            {ambassadors.map((amb) => (
+            {(ambassadors ?? []).map((amb) => (
               <div key={amb.id} className="card flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
                 <div>
                   <p className="font-semibold text-navy">{amb.first_name} {amb.last_name}</p>
@@ -176,7 +191,7 @@ export default function AdminAmbassadorsPage() {
                 </div>
               </div>
             ))}
-            {ambassadors.length === 0 && <p className="text-text-light">No ambassadors yet.</p>}
+           {(ambassadors ?? []).length === 0 && <p className="text-text-light">No ambassadors yet.</p>}
           </div>
 
           <div className="flex justify-center gap-3 mt-8">
