@@ -59,22 +59,22 @@ export default function AdminVerificationPage() {
   }, [router]);
 
   const loadRequests = useCallback(async () => {
-    setIsLoading(true);
-    const params = new URLSearchParams({ page: String(page), page_size: "20" });
-    if (statusFilter) params.set("status", statusFilter);
+  setIsLoading(true);
+  const params = new URLSearchParams({ page: String(page), page_size: "20" });
+  if (statusFilter) params.set("status", statusFilter);
 
-    const res = await adminListVerificationsAction(`?${params.toString()}`);
-    setIsLoading(false);
+  const res = await adminListVerificationsAction(`?${params.toString()}`);
+  setIsLoading(false);
 
-    if (!res.ok) {
-      setLoadError(res.message || "Couldn't load verification requests.");
-      return;
-    }
-    setLoadError("");
-    setRequests(res.data.results);
-    setHasNext(Boolean(res.data.next));
-    setHasPrevious(Boolean(res.data.previous));
-  }, [page, statusFilter]);
+  if (!res.ok) {
+    setLoadError(res.message || "Couldn't load verification requests.");
+    return;
+  }
+  setLoadError("");
+  setRequests(res.data ?? []);
+  setHasNext(Boolean(res.data?.next));
+  setHasPrevious(Boolean(res.data?.previous));
+}, [page, statusFilter]);
 
   useEffect(() => {
     if (isAuthorized) loadRequests();
@@ -164,7 +164,7 @@ export default function AdminVerificationPage() {
       {!isLoading && !loadError && (
         <>
           <div className="space-y-3">
-            {requests.map((req) => (
+            {(requests ?? []).map((req) => (
               <div key={req.id} className="card flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
                 <div>
                   <p className="font-semibold text-navy">{req.submitter}</p>
@@ -184,7 +184,7 @@ export default function AdminVerificationPage() {
                 </div>
               </div>
             ))}
-            {requests.length === 0 && <p className="text-text-light">No verification requests match this filter.</p>}
+            {(requests ?? []).length === 0 && <p className="text-text-light">No verification requests match this filter.</p>}
           </div>
 
           <div className="flex justify-center gap-3 mt-8">

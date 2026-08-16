@@ -40,5 +40,5 @@ export async function adminGetAmbassadorAction(id) {
 }
 
 export async function listAmbassadorsBatchAction() {
-  return withErrorHandling(() => ambassadorService.listBatch(query));
+  return withErrorHandling(() => ambassadorService.listBatch());
 }

@@ -1,7 +1,5 @@
 "use client";
 
-//TODO: listAmbassadorsBatchAction shoul be used to display batch dropdown at provision form (may need to correct api end point also)
-
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -39,6 +37,7 @@ export default function AdminAmbassadorsPage() {
 
   const [showProvisionForm, setShowProvisionForm] = useState(false);
   const [approvedApplications, setApprovedApplications] = useState([]);
+  const [batches, setBatches] = useState([]);
   const [provisionForm, setProvisionForm] = useState(initialProvisionForm);
   const [provisionFieldErrors, setProvisionFieldErrors] = useState({});
   const [provisionError, setProvisionError] = useState("");
@@ -82,11 +81,9 @@ const loadBatches = useCallback(async () => {
   if (!res.ok) {
     console.error("Error loading batches:", res.message);
     return;
-  } else {
-    console.log("listAmbassadorsBatchAction result:", res); // Debugging log
-  }
-  setApprovedApplications(res.data ?? []);
-}, []);
+    }
+    setBatches(res.data ?? []);
+  }, []);
 
   useEffect(() => {
     if (isAuthorized) {
@@ -117,7 +114,7 @@ const loadBatches = useCallback(async () => {
   setProvisionFieldErrors({});
 
   const res = await adminListApplicationsAction("?status=APPROVED&page_size=100");
-  if (res.ok) setApprovedApplications(res.data ?? []);
+  setApprovedApplications(res.ok ? (res.data ?? []) : []);
 };
 
   const handleProvisionChange = (e) => {
@@ -306,18 +303,21 @@ const loadBatches = useCallback(async () => {
               </div>
 
               <div>
-                <label className="label-field">Batch ID</label>
-                <input
+                <label className="label-field">Batch</label>
+                <select
                   required
                   name="batchId"
                   value={provisionForm.batchId}
                   onChange={handleProvisionChange}
-                  className="input-field font-mono text-sm"
-                  placeholder="uuid of an active batch"
-                />
-                <p className="text-xs text-text-light mt-1.5">
-                  There's no endpoint yet to list batches — paste the active batch's UUID directly.
-                </p>
+                  className="input-field"
+                >
+                  <option value="">Select a batch</option>
+                  {batches.map((b) => (
+                    <option key={b.id} value={b.id}>
+                      {b.name}{b.is_active ? "" : " (inactive)"}
+                    </option>
+                  ))}
+                </select>
                 {provisionFieldErrors.batch_id && (
                   <p className="text-xs text-red mt-1">{provisionFieldErrors.batch_id[0]}</p>
                 )}
