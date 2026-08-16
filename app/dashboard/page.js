@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { getCurrentUserAction, logoutAction } from "@/actions/authActions";
 import { getMyAmbassadorProfileAction, listMyProfileEditsAction } from "@/actions/ambassadorActions";
 import ProfileSummary from "@/components/dashboard/ProfileSummary";
@@ -124,6 +125,14 @@ useEffect(() => {
       {header}
 
       <ProfileSummary profile={profile} />
+
+      <div className="card mt-6 flex items-center justify-between">
+        <div>
+          <h2 className="font-semibold text-navy mb-1">Events</h2>
+          <p className="text-text-light text-sm">Create events, manage your team, and submit reports.</p>
+        </div>
+        <Link href="/dashboard/events" className="btn-primary shrink-0">Manage Events</Link>
+      </div>
 
       <div className="grid md:grid-cols-2 gap-6 mt-6">
         <ProfileEditForm hasPendingEdit={hasPendingEdit} onSubmitted={loadEdits} />

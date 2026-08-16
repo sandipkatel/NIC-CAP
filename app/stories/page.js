@@ -1,5 +1,8 @@
 import { innovationStories } from "../../data/mockData";
 
+// TODO: Fetch stories from the backend instead of using mock data
+// Currently fetch from mock data as program organized by Sandip, Purnima, Prakriti
+
 export default function StoriesPage() {
   return (
     <div className="container-page py-16">
