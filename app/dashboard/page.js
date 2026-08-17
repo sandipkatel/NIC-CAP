@@ -1,13 +1,12 @@
 "use client";
 
-// TODO: Ambassador are also able to create, draft, publish and report event they have performed.
-
-
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getCurrentUserAction, logoutAction } from "@/actions/authActions";
 import { getMyAmbassadorProfileAction, listMyProfileEditsAction } from "@/actions/ambassadorActions";
+import { normalizeList } from "@/lib/utils/list";
+import { normalizeStatus } from "@/lib/utils/status";
 import ProfileSummary from "@/components/dashboard/ProfileSummary";
 import ProfileEditForm from "@/components/dashboard/ProfileEditForm";
 import RequestHistory from "@/components/dashboard/RequestHistory";
@@ -21,58 +20,56 @@ export default function DashboardPage() {
   const [loadError, setLoadError] = useState("");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
- const loadEdits = useCallback(async () => {
-  const res = await listMyProfileEditsAction();
-  if (res.ok) {
-    setEdits(res.data ?? []);
-  }
-}, []);
+  const loadEdits = useCallback(async () => {
+    const res = await listMyProfileEditsAction();
+    if (res.ok) setEdits(normalizeList(res.data).items);
+  }, []);
 
-useEffect(() => {
-  let ignore = false;
+  useEffect(() => {
+    let ignore = false;
 
-  (async () => {
-    const userRes = await getCurrentUserAction();
-    if (!userRes.ok) {
-      router.push("/login");
-      return;
-    }
-
-    if (userRes.data.must_change_password) {
-      router.push("/change-password");
-      return;
-    }
-
-    if (userRes.data.role !== "AMBASSADOR" && userRes.data.role !== "ambassador") {
-      if (!ignore) {
-        setIsLoading(false);
-        setLoadError("This dashboard is only available to ambassador accounts.");
+    (async () => {
+      const userRes = await getCurrentUserAction();
+      if (!userRes.ok) {
+        router.push("/login");
+        return;
       }
-      return;
-    }
 
-    const [profileRes, editsRes] = await Promise.all([
-      getMyAmbassadorProfileAction(),
-      listMyProfileEditsAction(),
-    ]);
+      if (userRes.data.must_change_password) {
+        router.push("/change-password");
+        return;
+      }
 
-    if (ignore) return; // component unmounted or a newer effect run took over
+      if (normalizeStatus(userRes.data.role) !== "AMBASSADOR") {
+        if (!ignore) {
+          setIsLoading(false);
+          setLoadError("This dashboard is only available to ambassador accounts.");
+        }
+        return;
+      }
 
-    setIsLoading(false);
+      const [profileRes, editsRes] = await Promise.all([
+        getMyAmbassadorProfileAction(),
+        listMyProfileEditsAction(),
+      ]);
 
-    if (!profileRes.ok) {
-      setLoadError(profileRes.message || "Couldn't load your ambassador profile.");
-      return;
-    }
+      if (ignore) return; // component unmounted or a newer effect run took over
 
-    setProfile(profileRes.data);
-  setEdits(editsRes.ok ? (editsRes.data ?? []) : []);
-  })();
+      setIsLoading(false);
 
-  return () => {
-    ignore = true;
-  };
-}, [router]);
+      if (!profileRes.ok) {
+        setLoadError(profileRes.message || "Couldn't load your ambassador profile.");
+        return;
+      }
+
+      setProfile(profileRes.data);
+      setEdits(editsRes.ok ? normalizeList(editsRes.data).items : []);
+    })();
+
+    return () => {
+      ignore = true;
+    };
+  }, [router]);
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -88,13 +85,21 @@ useEffect(() => {
           {profile ? `Welcome back, ${profile.first_name}` : "Ambassador Dashboard"}
         </h1>
       </div>
-      <button
-        onClick={handleLogout}
-        disabled={isLoggingOut}
-        className="text-sm font-semibold text-navy border border-border rounded-full px-4 py-2 hover:bg-bg transition disabled:opacity-60 shrink-0"
-      >
-        {isLoggingOut ? "Signing out..." : "Sign out"}
-      </button>
+      <div className="flex items-center gap-3 shrink-0">
+        <Link
+          href="/change-password"
+          className="text-sm font-semibold text-navy border border-border rounded-full px-4 py-2 hover:bg-bg transition"
+        >
+          Change Password
+        </Link>
+        <button
+          onClick={handleLogout}
+          disabled={isLoggingOut}
+          className="text-sm font-semibold text-navy border border-border rounded-full px-4 py-2 hover:bg-bg transition disabled:opacity-60"
+        >
+          {isLoggingOut ? "Signing out..." : "Sign out"}
+        </button>
+      </div>
     </div>
   );
 
@@ -118,7 +123,7 @@ useEffect(() => {
     );
   }
 
-  const hasPendingEdit = (edits ?? []).some((e) => e.status === "Submitted" || e.status === "SUBMITTED");
+  const hasPendingEdit = edits.some((e) => normalizeStatus(e.status) === "SUBMITTED");
 
   return (
     <div className="container-page py-16 max-w-4xl">

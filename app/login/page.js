@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { loginAction } from "@/actions/authActions";
+import PasswordInput from "@/components/PasswordInput";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -58,14 +60,16 @@ export default function LoginPage() {
         </div>
         <div>
           <label className="label-field">Password</label>
-          <input
-            required
-            type="password"
+          <PasswordInput
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="input-field"
             placeholder="••••••••"
           />
+          <div className="text-right mt-1.5">
+            <Link href="/forgot-password" className="text-xs text-navy hover:underline">
+              Forgot password?
+            </Link>
+          </div>
         </div>
         <button type="submit" disabled={isSubmitting} className="btn-primary w-full disabled:opacity-60">
           {isSubmitting ? "Signing in..." : "Sign in"}

@@ -7,6 +7,8 @@ import { getCurrentUserAction, logoutAction } from "@/actions/authActions";
 import { adminListApplicationsAction } from "@/actions/applicationActions";
 import { adminListAmbassadorsAction } from "@/actions/ambassadorActions";
 import { adminListVerificationsAction } from "@/actions/verificationActions";
+import { normalizeList } from "@/lib/utils/list";
+import { normalizeStatus } from "@/lib/utils/status";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -27,8 +29,8 @@ export default function AdminPage() {
         router.push("/login");
         return;
       }
-      console.log("Current user role:", userRes.data);
-      if (userRes.data.role !== "ADMIN" && userRes.data.role !== "admin") {
+
+      if (normalizeStatus(userRes.data.role) !== "ADMIN") {
         setIsLoading(false);
         setLoadError("This page is only available to admin accounts.");
         return;
@@ -40,12 +42,7 @@ export default function AdminPage() {
         adminListApplicationsAction("?status=PENDING&page_size=1"),
         adminListVerificationsAction("?status=PENDING&page_size=1"),
       ]);
-      console.log("Admin summary data:", {
-        ambassadorsRes,
-        allAppsRes,
-        pendingAppsRes,
-        pendingEditsRes,
-      });
+
       setIsLoading(false);
 
       if (!ambassadorsRes.ok || !allAppsRes.ok) {
@@ -54,10 +51,10 @@ export default function AdminPage() {
       }
 
       setCounts({
-        totalAmbassadors: Array.isArray(ambassadorsRes.data) ? ambassadorsRes.data.length : 0,
-        totalApplications: Array.isArray(allAppsRes.data) ? allAppsRes.data.length : 0,
-        pendingApplications: pendingAppsRes.ok && Array.isArray(pendingAppsRes.data) ? pendingAppsRes.data.length : 0,
-        pendingProfileEdits: pendingEditsRes.ok && Array.isArray(pendingEditsRes.data) ? pendingEditsRes.data.length : 0,
+        totalAmbassadors: normalizeList(ambassadorsRes.data).count,
+        totalApplications: normalizeList(allAppsRes.data).count,
+        pendingApplications: pendingAppsRes.ok ? normalizeList(pendingAppsRes.data).count : 0,
+        pendingProfileEdits: pendingEditsRes.ok ? normalizeList(pendingEditsRes.data).count : 0,
       });
     })();
   }, [router]);
@@ -79,15 +76,25 @@ export default function AdminPage() {
           <p className="eyebrow mb-3">Administration</p>
           <h1 className="section-title mb-6">Admin Panel</h1>
         </div>
-        <button
-          onClick={handleLogout}
-          disabled={isLoggingOut}
-          className="text-sm font-semibold text-navy border border-border rounded-full px-4 py-2 hover:bg-bg transition disabled:opacity-60 shrink-0"
-        >
-          {isLoggingOut ? "Signing out..." : "Sign out"}
-        </button>
+        <div className="flex items-center gap-3 shrink-0">
+          <Link
+            href="/change-password"
+            className="text-sm font-semibold text-navy border border-border rounded-full px-4 py-2 hover:bg-bg transition"
+          >
+            Change Password
+          </Link>
+          <button
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="text-sm font-semibold text-navy border border-border rounded-full px-4 py-2 hover:bg-bg transition disabled:opacity-60"
+          >
+            {isLoggingOut ? "Signing out..." : "Sign out"}
+          </button>
+        </div>
       </div>
-     {loadError && <p className="text-red mb-4">{loadError}</p>}
+
+      {loadError && <p className="text-red mb-4">{loadError}</p>}
+
       <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 my-8">
         <div className="card text-center">
           <p className="text-2xl font-extrabold text-navy">{counts.totalAmbassadors}</p>
