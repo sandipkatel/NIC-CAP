@@ -219,33 +219,32 @@ export default function NetworkPage() {
           onClick={closeModal}
         >
           <div
-            className="bg-white rounded-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto overflow-x-hidden"
+            className="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-hidden flex flex-col sm:flex-row"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Photo banner */}
-            <div className="relative w-full aspect-[16/9] bg-bg">
+            {/* Photo — fixed-width column on desktop, capped-height banner on mobile */}
+            <div className="relative w-full sm:w-56 h-48 sm:h-auto shrink-0 bg-bg">
               {selectedCard.profile_photo ? (
                 <img
                   src={selectedCard.profile_photo}
                   alt={fullName(selectedCard)}
-                  className="w-full h-full object-cover rounded-t-2xl"
+                  className="w-full h-full object-cover rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue/10 to-navy/10 rounded-t-2xl">
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue/10 to-navy/10 rounded-t-2xl sm:rounded-t-none sm:rounded-l-2xl">
                   <span className="text-6xl font-bold text-navy/25">{initials(selectedCard)}</span>
                 </div>
               )}
-              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-navy/90 via-navy/40 to-transparent rounded-t-2xl" />
-              <div className="absolute inset-x-0 bottom-0 p-5">
-                <h2 className="font-bold text-white text-xl leading-tight drop-shadow-sm">
-                  {fullName(selectedCard)}
-                </h2>
-                <p className="text-white/85 text-sm">{selectedCard.college_name}</p>
-                <p className="text-white/70 text-xs mt-0.5">{selectedCard.batch}</p>
-              </div>
             </div>
 
-            <div className="p-8">
+            {/* Details */}
+            <div className="p-6 sm:p-8 overflow-y-auto">
+              <h2 className="font-bold text-navy text-xl leading-tight">
+                {fullName(selectedCard)}
+              </h2>
+              <p className="text-text-light text-sm">{selectedCard.college_name}</p>
+              <p className="text-text-light/70 text-xs mt-0.5 mb-5">{selectedCard.batch}</p>
+
               {detailLoading && <p className="text-text-light text-sm">Loading profile...</p>}
 
               {!detailLoading && selectedDetail && (
@@ -264,7 +263,7 @@ export default function NetworkPage() {
               )}
 
               <div className="flex items-center justify-between mt-8">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 flex-wrap">
                   {selectedDetail?.linkedin_url && (
                     <a
                       href={selectedDetail.linkedin_url}
@@ -298,7 +297,7 @@ export default function NetworkPage() {
                 </div>
                 <button
                   onClick={closeModal}
-                  className="text-sm font-semibold text-navy border border-border rounded-full px-4 py-2 hover:bg-bg transition"
+                  className="text-sm font-semibold text-navy border border-border rounded-full px-4 py-2 hover:bg-bg transition shrink-0"
                 >
                   Close
                 </button>
