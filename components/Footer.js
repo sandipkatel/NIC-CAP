@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function Footer() {
-   const quickActions = [
+  const quickActions = [
     {
       name: "LinkedIn",
       href: "https://www.linkedin.com",
@@ -37,10 +37,13 @@ export default function Footer() {
     <footer className="bg-navy text-white mt-20">
       <div className="container-page py-12 grid grid-cols-1 sm:grid-cols-3 gap-8">
         <div>
-          <div className="flex items-center gap-2 font-extrabold text-lg mb-3">
-            <Image src="/logo.png" alt="NIC CAP" width={32} height={32} className="rounded-lg bg-slate-50 rounded-full w-8 h-8" />
-            <span>CAP</span>
-          </div>
+          <Image
+            src="/logo.png"
+            alt="National Innovation Centre - Student Program"
+            width={220}
+            height={260}
+            className="h-14 w-auto object-contain mb-3"
+          />
           <p className="text-sm text-white/70">
             National Innovation Centre, Nepal - building the country&apos;s next generation
             of student innovators, one campus at a time.
@@ -61,29 +64,29 @@ export default function Footer() {
         <div>
           <div className="flex flex-col sm:flex-row gap-6">
             <div>
-          <h4 className="font-semibold mb-3 text-sm uppercase tracking-wider text-white/60">Contact</h4>
-            <ul className="space-y-2 text-sm text-white/70 sm:flex-1">
-              <li>National Innovation Centre, ICT Lab</li>
-              <li>Pokhara, Kaski, Nepal</li>
-              <li>cap@nic.org.np</li>
-            </ul>
-            <div className="mt-8">
-              <h4 className="font-semibold mb-2 text-sm uppercase tracking-wider text-white/60">Quick Connect</h4>
-              <div className="flex items-center gap-2">
-                {quickActions.map((action) => (
-                  <Link
-                    key={action.name}
-                    href={action.href}
-                    className="inline-flex items-center justify-center w-8 h-8 rounded-md bg-white/10 text-white/80 hover:text-red hover:bg-white/20 transition-colors"
-                    aria-label={action.name}
-                    target={action.href.startsWith("http") ? "_blank" : undefined}
-                    rel={action.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  >
-                    {action.icon}
-                  </Link>
-                ))}
+              <h4 className="font-semibold mb-3 text-sm uppercase tracking-wider text-white/60">Contact</h4>
+              <ul className="space-y-2 text-sm text-white/70 sm:flex-1">
+                <li>National Innovation Centre, ICT Lab</li>
+                <li>Pokhara, Kaski, Nepal</li>
+                <li>cap@nic.org.np</li>
+              </ul>
+              <div className="mt-8">
+                <h4 className="font-semibold mb-2 text-sm uppercase tracking-wider text-white/60">Quick Connect</h4>
+                <div className="flex items-center gap-2">
+                  {quickActions.map((action) => (
+                    <Link
+                      key={action.name}
+                      href={action.href}
+                      className="inline-flex items-center justify-center w-8 h-8 rounded-md bg-white/10 text-white/80 hover:text-red hover:bg-white/20 transition-colors"
+                      aria-label={action.name}
+                      target={action.href.startsWith("http") ? "_blank" : undefined}
+                      rel={action.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    >
+                      {action.icon}
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
             </div>
             <div
               className="w-full sm:flex-1 overflow-hidden rounded-lg"

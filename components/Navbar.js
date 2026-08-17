@@ -27,12 +27,17 @@ export default function Navbar() {
   const isActive = (href) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
-    <header className="bg-navy sticky top-0 z-50">
+    <header className="bg-gradient-to-r from-navy via-navy/70 to-red sticky top-0 z-50">
       <nav className="container-page flex items-center justify-between h-16">
-        <Link href="/" className="flex items-center gap-2 text-white font-extrabold text-lg tracking-tight">
-          <Image src="/logo.png" alt="NIC CAP" width={32} height={32} className="rounded-lg bg-slate-50 rounded-full w-8 h-8" />
-          <span className="hidden sm:inline">College Ambassador Program</span>
-          <span className="sm:hidden">CAP</span>
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/logo.png"
+            alt="National Innovation Centre - Student Program"
+            width={220}
+            height={260}
+            className="h-12 w-auto object-contain"
+            priority
+          />
         </Link>
 
         {/* Desktop nav */}
@@ -43,8 +48,8 @@ export default function Navbar() {
               href={link.href}
               className={`text-sm font-medium transition-colors duration-150 pb-1 border-b-2 ${
                 isActive(link.href)
-                  ? "text-white border-red"
-                  : "text-[#F8F9FA]/80 border-transparent hover:text-white hover:border-red/60"
+                  ? "text-white border-white"
+                  : "text-[#F8F9FA]/80 border-transparent hover:text-white hover:border-white/60"
               }`}
             >
               {link.label}
