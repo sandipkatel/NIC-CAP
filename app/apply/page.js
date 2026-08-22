@@ -259,12 +259,12 @@ export default function ApplyPage() {
         <div className="grid sm:grid-cols-2 gap-6">
           <div>
             <label className="label-field">First Name <span className="text-red">*</span></label>
-            <input required name="firstName" value={form.firstName} onChange={handleChange} className="input-field placeholder:text-gray-400" placeholder="e.g. Sujata" />
+            <input required name="firstName" value={form.firstName} onChange={handleChange} className="input-field placeholder:text-gray-400" placeholder="e.g. Sandip" />
             {fieldErrors.first_name && <p className="text-xs text-red mt-1">{fieldErrors.first_name[0]}</p>}
           </div>
           <div>
             <label className="label-field">Last Name <span className="text-red">*</span></label>
-            <input required name="lastName" value={form.lastName} onChange={handleChange} className="input-field placeholder:text-gray-400" placeholder="e.g. Koirala" />
+            <input required name="lastName" value={form.lastName} onChange={handleChange} className="input-field placeholder:text-gray-400" placeholder="e.g. Katel" />
             {fieldErrors.last_name && <p className="text-xs text-red mt-1">{fieldErrors.last_name[0]}</p>}
           </div>
           <div>

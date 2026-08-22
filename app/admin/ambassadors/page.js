@@ -14,7 +14,7 @@ import {
 import StatusBadge from "@/components/admin/StatusBadge";
 
 function formatDate(dateStr) {
-  if (!dateStr) return "—";
+  if (!dateStr) return "-";
   return new Date(dateStr).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" });
 }
 
@@ -177,7 +177,7 @@ const loadBatches = useCallback(async () => {
                 <div>
                   <p className="font-semibold text-navy">{amb.first_name} {amb.last_name}</p>
                   <p className="text-text-light text-sm">{amb.organization_email}</p>
-                  <p className="text-text-light text-sm">{amb.college_name} — {amb.faculty}</p>
+                  <p className="text-text-light text-sm">{amb.college_name} - {amb.faculty}</p>
                   <p className="text-text-light text-xs mt-1">{amb.batch} · Joined {formatDate(amb.created_at)}</p>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
@@ -211,7 +211,7 @@ const loadBatches = useCallback(async () => {
               <div className="space-y-4">
                 <div>
                   <h2 className="font-bold text-navy text-xl">{selectedDetail.first_name} {selectedDetail.last_name}</h2>
-                  <p className="text-text-light text-sm">{selectedDetail.college_name} — {selectedDetail.faculty}</p>
+                  <p className="text-text-light text-sm">{selectedDetail.college_name} - {selectedDetail.faculty}</p>
                 </div>
                 <dl className="space-y-2 text-sm">
                   <div className="flex justify-between"><dt className="text-text-light">Status</dt><dd><StatusBadge status={selectedDetail.status} /></dd></div>
@@ -277,7 +277,7 @@ const loadBatches = useCallback(async () => {
                   <option value="">Select an application</option>
                   {approvedApplications.map((app) => (
                     <option key={app.id} value={app.id}>
-                      {app.first_name} {app.last_name} — {app.email}
+                      {app.first_name} {app.last_name} - {app.email}
                     </option>
                   ))}
                 </select>

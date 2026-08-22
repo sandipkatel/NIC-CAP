@@ -34,7 +34,7 @@ export default function NetworkPage() {
   const [selectedDetail, setSelectedDetail] = useState(null);
   const [detailLoading, setDetailLoading] = useState(false);
 
-  // Load the public directory once. page_size=100 to approximate "everyone" —
+  // Load the public directory once. page_size=100 to approximate "everyone" -
   // bump this or add real pagination controls if the roster grows past that.
   useEffect(() => {
     listAmbassadorsAction("?page_size=100").then((res) => {
@@ -163,7 +163,7 @@ export default function NetworkPage() {
               onClick={() => openAmbassador(a)}
               className="group relative bg-white border border-border rounded-2xl overflow-hidden cursor-pointer transition hover:shadow-lg hover:-translate-y-1 w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(20%-1.125rem)]"
             >
-              {/* Photo — the focal point of the card */}
+              {/* Photo - the focal point of the card */}
               <div className="relative w-full aspect-[4/4] bg-bg overflow-hidden">
                 {a.profile_photo ? (
                   <img
@@ -217,7 +217,7 @@ export default function NetworkPage() {
             className="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-hidden flex flex-col sm:flex-row"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Photo — fixed-width column on desktop, capped-height banner on mobile */}
+            {/* Photo - fixed-width column on desktop, capped-height banner on mobile */}
             <div className="relative w-full sm:w-56 h-48 sm:h-auto shrink-0 bg-bg">
               {selectedCard.profile_photo ? (
                 <img

@@ -11,7 +11,7 @@ export async function loginAction(email, password) {
 
     await setSession({ access: res.data.tokens.access, refresh: res.data.tokens.refresh });
 
-    // Tokens stay in the httpOnly cookie — never sent back into the response body.
+    // Tokens stay in the httpOnly cookie - never sent back into the response body.
     return {
       ok: true,
       data: { user: res.data.user, mustChangePassword: res.data.must_change_password },

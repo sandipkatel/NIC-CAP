@@ -49,7 +49,7 @@ export default function ProfileEditForm({ hasPendingEdit, onSubmitted }) {
       return;
     }
 
-    setSuccessMessage("Profile edit submitted — it's now pending admin review.");
+    setSuccessMessage("Profile edit submitted - it's now pending admin review.");
     setForm(initialForm);
     setProfilePhoto(null);
     setCv(null);

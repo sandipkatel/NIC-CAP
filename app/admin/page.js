@@ -143,7 +143,7 @@ export default function AdminPage() {
       </div>
 
       <p className="text-text-light text-xs mt-8">
-        Events and story publishing aren't available yet — those parts of the backend haven't
+        Events and story publishing aren't available yet - those parts of the backend haven't
         been built out.
       </p>
     </div>

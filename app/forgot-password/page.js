@@ -25,7 +25,7 @@ export default function ForgotPasswordPage() {
     }
 
     // The API always returns the same message regardless of whether the
-    // email exists, by design — don't build UI that reveals account existence.
+    // email exists, by design - don't build UI that reveals account existence.
     setMessage(res.data?.detail || "If an account with that email exists, a password reset email has been sent.");
   };
 

@@ -20,12 +20,12 @@ const DECISIONS = [
 ];
 
 function formatDate(dateStr) {
-  if (!dateStr) return "—";
+  if (!dateStr) return "-";
   return new Date(dateStr).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" });
 }
 
 function formatDateTime(dateStr) {
-  if (!dateStr) return "—";
+  if (!dateStr) return "-";
   return new Date(dateStr).toLocaleString("en-US", {
     day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit",
   });
@@ -43,7 +43,7 @@ export default function AdminApplicationsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
 
-  // Detail/decision modal state. Replaces the old "reviewingId" flow — now any
+  // Detail/decision modal state. Replaces the old "reviewingId" flow - now any
   // application (not just PENDING ones) can be opened to view full detail and change status.
   const [detailId, setDetailId] = useState(null);
   const [reviewComment, setReviewComment] = useState("");
@@ -165,7 +165,7 @@ export default function AdminApplicationsPage() {
                 <div>
                   <p className="font-semibold text-navy">{app.first_name} {app.last_name}</p>
                   <p className="text-text-light text-sm">{app.email} · {app.phone_number}</p>
-                  <p className="text-text-light text-sm">{app.college_name} — {app.faculty}</p>
+                  <p className="text-text-light text-sm">{app.college_name} - {app.faculty}</p>
                   <p className="text-text-light text-xs mt-1">
                     {app.city}, {app.district}, {app.province} · Applied {formatDate(app.created_at)}
                   </p>
@@ -215,21 +215,21 @@ export default function AdminApplicationsPage() {
               </h2>
               <StatusBadge status={detailApp.status} />
             </div>
-            <p className="text-text-light text-sm mb-4">{detailApp.college_name} — {detailApp.faculty}</p>
+            <p className="text-text-light text-sm mb-4">{detailApp.college_name} - {detailApp.faculty}</p>
 
             <dl className="space-y-2 text-sm mb-5">
               <div className="flex justify-between gap-4">
                 <dt className="text-text-light">Email</dt>
-                <dd className="text-navy text-right">{detailApp.email || "—"}</dd>
+                <dd className="text-navy text-right">{detailApp.email || "-"}</dd>
               </div>
               <div className="flex justify-between gap-4">
                 <dt className="text-text-light">Phone</dt>
-                <dd className="text-navy text-right">{detailApp.phone_number || "—"}</dd>
+                <dd className="text-navy text-right">{detailApp.phone_number || "-"}</dd>
               </div>
               <div className="flex justify-between gap-4">
                 <dt className="text-text-light">Location</dt>
                 <dd className="text-navy text-right">
-                  {[detailApp.city, detailApp.district, detailApp.province].filter(Boolean).join(", ") || "—"}
+                  {[detailApp.city, detailApp.district, detailApp.province].filter(Boolean).join(", ") || "-"}
                 </dd>
               </div>
               <div className="flex justify-between gap-4">
@@ -238,7 +238,7 @@ export default function AdminApplicationsPage() {
               </div>
               <div className="flex justify-between gap-4">
                 <dt className="text-text-light">Reviewed by</dt>
-                <dd className="text-navy text-right">{detailApp.reviewed_by || "—"}</dd>
+                <dd className="text-navy text-right">{detailApp.reviewed_by || "-"}</dd>
               </div>
               <div className="flex justify-between gap-4">
                 <dt className="text-text-light">Reviewed at</dt>
@@ -249,7 +249,7 @@ export default function AdminApplicationsPage() {
             {/*
               TODO (backend): the admin applications endpoint doesn't currently return
               address, current_year_or_semester, linkedin_url, github_url, portfolio_url,
-              or the uploaded cv / cover_letter / college_recommendation_letter files —
+              or the uploaded cv / cover_letter / college_recommendation_letter files -
               even though those are collected at submission time. Once the API returns
               them, add rows/links here, e.g.:
 

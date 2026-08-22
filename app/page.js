@@ -52,7 +52,7 @@ export default function HomePage() {
               The NIC Student Program connects students directly to Nepal&apos;s national
               innovation ecosystem. Instead of another campus club that meets and disperses,
               it&apos;s a standing bridge between colleges and the people building the
-              country&apos;s innovation infrastructure — mentors, funders, and industry
+              country&apos;s innovation infrastructure - mentors, funders, and industry
               partners who are actively looking for early talent.
             </p>
             <p className="text-text-light leading-relaxed mb-4">
@@ -63,7 +63,7 @@ export default function HomePage() {
               they can actually pitch, build, or ship.
             </p>
             <p className="text-text-light leading-relaxed">
-              The program is built on one belief — talent is distributed evenly across Nepal,
+              The program is built on one belief - talent is distributed evenly across Nepal,
               but access to opportunity isn&apos;t. Being an Ambassador means closing that gap
               for your own college, one connection at a time.
             </p>

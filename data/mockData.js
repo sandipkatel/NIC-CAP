@@ -400,24 +400,41 @@ export const ambassadors = [
 export const innovationStories = [
   {
     id: "story-01",
-    project: "AgriSense",
-    team: "Team Rootstock, Kathmandu University",
-    description:
-      "A low-cost soil moisture sensor kit built by three ambassadors, now piloted on 40 smallholder farms outside Dhulikhel.",
+    project: "Apache Kafka: Real-World Data at Scale",
+    team: "Sandip Katel & Code for Nepal",
+    thumbnail: "/images/stories/apache-kafka-session.jpeg",
+    description: [
+      "Behind almost every app we use daily - from ride-hailing to food delivery to banking - there's a constant, invisible flood of data moving between systems in real time. Apache Kafka is the tool that many of the world's largest tech companies rely on to manage that flood, and it was the centerpiece of a hands-on session organized by Code for Nepal, led by College Ambassador Sandip Katel.",
+      "Rather than keeping the topic confined to theory, the session was designed to show students why Kafka matters in practice. High-scale platforms can't afford to have services waiting on each other or losing data when traffic spikes; Kafka solves this by acting as a durable, high-throughput messaging backbone that lets independent systems publish and consume streams of events without ever talking to each other directly. Students learned about core concepts like topics, producers, consumers, and partitions, and how these pieces combine to let companies process millions of events per second reliably.",
+      "To ground these concepts in industry reality, the session featured Sabin Shapkota, a Software Engineer at Fleet Panda, who walked students through how real-world engineering teams design systems around Kafka - from handling sudden traffic surges to ensuring data isn't lost even when parts of a system fail. This kind of first-hand perspective is exactly the industry-level exposure Code for Nepal set out to bring to students beyond what a typical classroom covers.",
+      "Sandip Katel's initiative in organizing this event reflects a broader mission of making practical, job-relevant tech skills accessible to students early in their academic journey. By pairing a technical topic that's genuinely used in production systems with a speaker who works with it daily, the session gave attendees a rare, grounded look at what building for scale actually looks like - and left them with both new technical vocabulary and a clearer sense of where that knowledge fits in the industry.",
+    ],
   },
   {
     id: "story-02",
-    project: "SafeCommute",
-    team: "Bikash Shrestha & Pulchowk Robotics Club",
-    description:
-      "A campus shuttle tracking app built during the National Hackathon, now used by over 1,200 students daily.",
+    project: "Cybersecurity, AI, and the Future of Work: A Panel Discussion",
+    team: "Sandesh Acharya & REC IT Club, Rapti Engineering College",
+    thumbnail: "/images/stories/rec-panel-discussion.jpeg",
+    description: [
+      "As technology becomes more deeply woven into everyday life, the questions it raises are no longer just technical - they're personal, professional, and societal. That was the spirit behind a panel discussion held at Rapti Engineering College, organized by College Ambassador Sandesh Acharya in collaboration with the REC IT Club, bringing together three urgent conversations under one roof: cybersecurity awareness, whether technology is making us smarter or more dependent, and the impact of AI on jobs and opportunities.",
+      "The cybersecurity segment focused on the everyday digital habits students often overlook - weak passwords, unsecured public networks, oversharing on social media - and how these small vulnerabilities can snowball into real risks. Panelists discussed practical awareness strategies, helping students see cybersecurity not as an abstract IT concern but as a life skill relevant to anyone who owns a smartphone or a bank account.",
+      "The second theme took a more reflective turn: is technology making us smarter, or simply more dependent on it? Panelists and students debated how constant access to information, search engines, and now AI assistants has changed the way people learn and think, weighing the convenience of instant answers against the erosion of independent problem-solving and memory. It was less about reaching a single conclusion and more about equipping students to be intentional about their own relationship with technology.",
+      "The final and perhaps most pressing topic explored how AI is reshaping the job market - which roles are being automated, which new careers are emerging, and how students preparing to enter the workforce can position themselves to adapt rather than be displaced. This conversation resonated strongly with the audience, many of whom are only a few years away from starting their careers in a landscape that is shifting faster than ever,",
+      "Sandesh Acharya's leadership in bringing this panel together gave students at Rapti Engineering College a rare space to engage critically with the technologies shaping their futures, rather than simply consuming them. By tackling three distinct but deeply connected topics in one session, the event created exactly the kind of reflective, real-world dialogue that classroom lectures rarely have room for.",
+    ],
   },
   {
     id: "story-03",
-    project: "PathshalaConnect",
-    team: "Anisha Gurung, Pokhara University",
-    description:
-      "A volunteer-tutoring platform connecting university students with public school children in rural Kaski district.",
+    project: "From Circuits to Robots: A 3-Day Electronics Workshop",
+    team: "Manisha Khatri, Alice Jimee, Alisha Ghimire & Mini Shakya, with BMRIC Club",
+    thumbnail: "/images/stories/electronics-workshop.jpeg",
+    description: [
+      "For many students, electronics and robotics remain concepts confined to textbooks - diagrams of circuits and code snippets that rarely turn into something you can actually hold in your hands. A 3-day workshop organized in collaboration with the BMRIC Club of the National Institute of Engineering & Technology Nepal set out to change that, giving participants the chance to move from theory to tangible, working robots over just three days.",
+      "The workshop began with the fundamentals: understanding microcontrollers and how they act as the 'brain' of any electronic project. Participants got hands-on with Arduino and ESP32 boards, two of the most widely used platforms in embedded systems today, learning how to write and upload code that could control real physical components. From there, the sessions moved into sensor interfacing - teaching participants how devices sense the world around them, whether it's detecting distance, light, motion, or touch, and how that raw sensor data gets translated into meaningful action.",
+      "By the final day, participants were applying everything they'd learned to design and build their own robots from scratch - combining microcontrollers, sensors, and motors into functioning systems they had conceived and assembled themselves. Watching a robot they built respond to its environment for the first time was, for many, the moment the workshop's earlier technical lessons truly clicked into place.",
+      "None of this would have been possible without the guidance of mentors Alice Jimee, Alisha Ghimire, and Mini Shakya, who worked closely with participants throughout the three days, patiently walking them through debugging circuits, fixing code, and refining their robot designs. Their willingness to share hands-on expertise turned what could have been an intimidating technical subject into an approachable, encouraging learning experience.",
+      "The workshop was organized by College Ambassador Manisha Khatri, whose planning and coordination with the BMRIC Club brought together the right mix of curriculum, mentorship, and hands-on time that made the event a genuine success. With participants leaving not just with notes but with robots they built themselves, the workshop stands as a strong example of how experiential learning can turn curiosity into real engineering skill - and a promising sign of more hands-on workshops to come.",
+    ],
   },
 ];
 

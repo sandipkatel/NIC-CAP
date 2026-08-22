@@ -19,7 +19,7 @@ import EventStatusBadge from "@/components/events/EventStatusBadge";
 const TEAM_ROLES = ["LEAD", "HOST", "VOLUNTEER", "LEAD_MANAGER", "COORDINATOR", "SPEAKER", "OTHER"];
 
 function formatDate(dateStr) {
-  if (!dateStr) return "—";
+  if (!dateStr) return "-";
   return new Date(dateStr).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" });
 }
 
@@ -267,7 +267,7 @@ export default function EventDetailPage() {
                     }}
                     className="w-full text-left px-3 py-2 text-sm hover:bg-bg"
                   >
-                    {a.first_name} {a.last_name} — {a.college_name}
+                    {a.first_name} {a.last_name} - {a.college_name}
                   </button>
                 ))}
                 {filteredAmbassadors.length === 0 && <p className="px-3 py-2 text-sm text-text-light">No matches.</p>}
