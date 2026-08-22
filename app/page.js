@@ -42,20 +42,30 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* About CAP */}
+      {/* About Student Program */}
       <section id="about" className="container-page pb-20">
         <div className="grid md:grid-cols-2 gap-12 items-start">
           <div>
-            <p className="eyebrow mb-3">About CAP</p>
+            <p className="eyebrow mb-3">About NIC Student Program</p>
             <h2 className="section-title mb-5">Not a club. A launchpad.</h2>
             <p className="text-text-light leading-relaxed mb-4">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+              The NIC Student Program connects students directly to Nepal&apos;s national
+              innovation ecosystem. Instead of another campus club that meets and disperses,
+              it&apos;s a standing bridge between colleges and the people building the
+              country&apos;s innovation infrastructure — mentors, funders, and industry
+              partners who are actively looking for early talent.
             </p>
             <p className="text-text-light leading-relaxed mb-4">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+              Student Ambassadors are the front line of that bridge. They bring opportunities,
+              events, and resources back to their own campuses, and in turn surface student
+              ideas and projects that deserve a wider audience. It&apos;s hands-on: organizing
+              sessions, running outreach, and helping peers turn a rough idea into something
+              they can actually pitch, build, or ship.
             </p>
             <p className="text-text-light leading-relaxed">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+              The program is built on one belief — talent is distributed evenly across Nepal,
+              but access to opportunity isn&apos;t. Being an Ambassador means closing that gap
+              for your own college, one connection at a time.
             </p>
           </div>
           <div className="card">
@@ -64,6 +74,11 @@ export default function HomePage() {
               A Nepal where every college has a direct line to national innovation
               infrastructure - no student's idea stalls for lack of access.
             </p>
+            <img
+              src="/images/vision-illustration.png"
+              alt="Illustration of a student looking ahead through a telescope, representing vision and foresight"
+              className="w-full h-auto"
+            />
           </div>
         </div>
       </section>
