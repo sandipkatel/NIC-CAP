@@ -156,12 +156,12 @@ export default function NetworkPage() {
       {loadError && <p className="text-red">{loadError}</p>}
 
       {!isLoading && !loadError && (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="flex flex-wrap justify-center gap-6">
           {filtered.map((a) => (
             <div
               key={a.id}
               onClick={() => openAmbassador(a)}
-              className="group relative bg-white border border-border rounded-2xl overflow-hidden cursor-pointer transition hover:shadow-lg hover:-translate-y-1"
+              className="group relative bg-white border border-border rounded-2xl overflow-hidden cursor-pointer transition hover:shadow-lg hover:-translate-y-1 w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(20%-1.125rem)]"
             >
               {/* Photo — the focal point of the card */}
               <div className="relative w-full aspect-[4/4] bg-bg overflow-hidden">
@@ -177,26 +177,21 @@ export default function NetworkPage() {
                   </div>
                 )}
 
-                {/* Gradient + name/college overlay */}
+                {/* Gradient + name/college/CTA overlay */}
                 <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-navy/90 via-navy/40 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-4">
-                  <h3 className="font-semibold text-white text-lg leading-tight drop-shadow-sm">
-                    {fullName(a)}
-                  </h3>
-                  <p className="text-white/85 text-sm">{a.college_name}</p>
-                </div>
-              </div>
-
-              {/* Details */}
-              <div className="p-5">
-                <p className="text-text-light text-sm mb-3">{a.faculty}</p>
-                <div className="flex items-center justify-end mt-4">
+                <div className="absolute inset-x-0 bottom-0 p-4 flex items-end justify-between gap-2">
+                  <div>
+                    <h3 className="font-semibold text-white text-lg leading-tight drop-shadow-sm">
+                      {fullName(a)}
+                    </h3>
+                    <p className="text-white/85 text-sm">{a.college_name}</p>
+                  </div>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       openAmbassador(a);
                     }}
-                    className="text-navy text-sm font-semibold hover:underline"
+                    className="shrink-0 text-white text-xs font-semibold bg-white/15 backdrop-blur-sm border border-white/30 rounded-full px-3 py-1.5 hover:bg-white/25 transition"
                   >
                     Know more
                   </button>
